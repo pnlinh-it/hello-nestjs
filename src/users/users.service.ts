@@ -1,6 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserInterface } from './interfaces/user.interface';
+import { IndexNotFoundException } from '../exceptions/index-not-found.exception';
 
 @Injectable()
 export class UsersService {
@@ -14,7 +22,7 @@ export class UsersService {
     const user = this.users.find((user) => user.id === id);
 
     if (!user) {
-      throw new NotFoundException();
+      throw new IndexNotFoundException(id);
     }
 
     return user;
