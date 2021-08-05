@@ -10,9 +10,9 @@ import { IndexNotFoundException } from '../exceptions/index-not-found.exception'
 @Catch()
 export class AllExceptionsFilter extends BaseExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
-    // if (exception instanceof IndexNotFoundException) {
-    //   return AllExceptionsFilter.handleIndexNotFound(exception, host);
-    // }
+    if (exception instanceof IndexNotFoundException) {
+      return AllExceptionsFilter.handleIndexNotFound(exception, host);
+    }
 
     super.catch(exception, host);
   }

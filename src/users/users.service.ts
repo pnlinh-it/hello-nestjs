@@ -66,4 +66,8 @@ export class UsersService {
 
     this.users.splice(index, 1);
   }
+
+  findByEmail(email: string): UserInterface | undefined {
+    return this.users.find((user) => user.email === email);
+  }
 }

@@ -14,10 +14,12 @@ import {
   Res,
   ParseIntPipe,
   Put,
+  UsePipes,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Request, Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
+import { Rule1Pipe } from '../pipes/rule1.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -65,6 +67,7 @@ export class UsersController {
   @Post()
   @Header('Cache-Control', 'true')
   @HttpCode(HttpStatus.CREATED)
+  @UsePipes(Rule1Pipe)
   store(@Body() createUserDto: CreateUserDto) {
     return this.userService.store(createUserDto);
   }
