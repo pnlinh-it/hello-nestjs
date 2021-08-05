@@ -21,10 +21,11 @@ async function bootstrap() {
       disableErrorMessages: false,
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
       dismissDefaultMessages: false,
+      stopAtFirstError: true,
       // Handle at ./node_modules/@nestjs/common/pipes/validation.pipe.js#63
-      // exceptionFactory: (errors: ValidationError[]) => {
-      //   return errors;
-      // },
+      exceptionFactory: (errors: ValidationError[]) => {
+        return errors;
+      },
       transform: true,
       validationError: { target: true, value: true },
     }),

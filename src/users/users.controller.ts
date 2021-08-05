@@ -20,6 +20,7 @@ import { UsersService } from './users.service';
 import { Request, Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Rule1Pipe } from '../pipes/rule1.pipe';
+import { CreateAdminUserDto } from './dto/create-admin-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -68,7 +69,7 @@ export class UsersController {
   @Header('Cache-Control', 'true')
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(Rule1Pipe)
-  store(@Body() createUserDto: CreateUserDto) {
+  store(@Body() createUserDto: CreateAdminUserDto) {
     return this.userService.store(createUserDto);
   }
 

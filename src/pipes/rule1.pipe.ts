@@ -5,7 +5,6 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import { ValidationExecutor } from 'class-validator/types/validation/ValidationExecutor';
 
 @Injectable()
 export class Rule1Pipe implements PipeTransform {
