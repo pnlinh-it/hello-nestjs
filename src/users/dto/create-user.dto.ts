@@ -1,16 +1,12 @@
 import {
   IsEmail,
-  isIn,
-  IsInt,
   IsNotEmpty,
   IsNumber,
-  IsNumberString,
   IsString,
   Max,
   MaxLength,
-  Min,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
 
 export class CreateUserDto {
   @IsEmail()
@@ -28,7 +24,8 @@ export class CreateUserDto {
   @IsNotEmpty()
   name: string;
 
-  @Type(() => Number)
+  //@Type(() => Number)
+  @Transform(({ value }) => Number(value))
   @Max(5)
   @IsNumber()
   @IsNotEmpty()
