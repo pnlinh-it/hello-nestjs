@@ -15,17 +15,24 @@ import {
   ParseIntPipe,
   Put,
   UsePipes,
+  UseGuards,
+  SetMetadata,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Request, Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Rule1Pipe } from '../pipes/rule1.pipe';
 import { CreateAdminUserDto } from './dto/create-admin-user.dto';
+import { UserGuard } from '../user.service';
 
+@UseGuards(UserGuard)
+@SetMetadata('roles', ['staff'])
 @Controller('users')
 export class UsersController {
   constructor(private userService: UsersService) {}
 
+  @UseGuards(UserGuard)
+  @SetMetadata('roles', ['admin'])
   @Get()
   index() {
     return this.userService.index();
