@@ -5,7 +5,7 @@ import { Reflector } from '@nestjs/core';
 type ActiveResult = boolean | Promise<boolean> | Observable<boolean>;
 
 @Injectable()
-export class UserGuard implements CanActivate {
+export class CheckUserGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): ActiveResult {

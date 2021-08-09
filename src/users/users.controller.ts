@@ -23,15 +23,20 @@ import { Request, Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Rule1Pipe } from '../pipes/rule1.pipe';
 import { CreateAdminUserDto } from './dto/create-admin-user.dto';
-import { UserGuard } from '../user.service';
+import { CheckUserGuard } from '../guards/check-user.guard';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtService } from '@nestjs/jwt';
 
-@UseGuards(UserGuard)
+@UseGuards(CheckUserGuard)
 @SetMetadata('roles', ['staff'])
 @Controller('users')
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
-  @UseGuards(UserGuard)
+  @UseGuards(CheckUserGuard)
   @SetMetadata('roles', ['admin'])
   @Get()
   index() {
@@ -92,5 +97,17 @@ export class UsersController {
   @HttpCode(HttpStatus.NO_CONTENT)
   destroy(@Param('id', ParseIntPipe) id) {
     return this.userService.destroy(id);
+  }
+
+  // @UseGuards(CheckUserGuard)
+  // @UseGuards(AuthGuard('local'))
+  // @UseGuards(CheckUserGuard, AuthGuard('local'))
+  @UseGuards(AuthGuard('local'))
+  @Post('login')
+  login(@Req() req) {
+    const payload = { username: req.user.username, sub: req.user.userId };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }

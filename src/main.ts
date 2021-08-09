@@ -8,8 +8,12 @@ import { ValidationError } from '@nestjs/common/interfaces/external/validation-e
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
-  app.useGlobalFilters(new IndexNotFoundExceptionFilter());
+  app.useGlobalFilters(
+    // Don't change the exception order
+    // Under line will take higher priority.
+    new AllExceptionsFilter(httpAdapter),
+    new IndexNotFoundExceptionFilter(),
+  );
   app.useGlobalPipes(
     new ValidationPipe({
       // Will ignore validate null or undefined properties

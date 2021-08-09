@@ -5,4 +5,5 @@ export interface EnvironmentVariables {
   appUrl: string;
   port: number;
   database: DatabaseConfig;
+  jwtKey: string;
 }

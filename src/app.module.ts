@@ -12,6 +12,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 import { DatabaseConfig } from './config/database.config';
 import { EnvironmentVariables } from './config/environment-variables';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
 //import configurationYml from './config/configuration-yml';
 
 const option = { password: 'awdawd' };
@@ -37,6 +39,7 @@ const connectionFactory = {
     ConfigModule.forRoot({
       load: [configuration],
       cache: true,
+      isGlobal: true,
       // envFilePath: '.development.env',
     }),
   ],
