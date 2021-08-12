@@ -14,6 +14,8 @@ import { DatabaseConfig } from './config/database.config';
 import { EnvironmentVariables } from './config/environment-variables';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { ExportServiceModule } from './modules/export-service/export-service.module';
+import { ExportServiceService } from './modules/export-service/export-service.service';
 //import configurationYml from './config/configuration-yml';
 
 const option = { password: 'awdawd' };
@@ -42,6 +44,7 @@ const connectionFactory = {
       isGlobal: true,
       // envFilePath: '.development.env',
     }),
+    ExportServiceModule,
   ],
   controllers: [AppController],
   providers: [AppService, aliasM1ServiceFactory, connectionFactory, LogService],
@@ -58,6 +61,7 @@ export class AppModule {
     private readonly databaseConnection: DatabaseConnection,
     private configService: ConfigService,
     private configService2: ConfigService<EnvironmentVariables>,
+    private exportModule: ExportServiceService,
   ) {
     const host = configService2.get('database', { infer: true }).host;
     const dbConfig = configService.get<DatabaseConfig>('database');

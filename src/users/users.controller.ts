@@ -110,4 +110,10 @@ export class UsersController {
       access_token: this.jwtService.sign(payload),
     };
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('profile')
+  profile(@Req() req) {
+    return req.user;
+  }
 }
