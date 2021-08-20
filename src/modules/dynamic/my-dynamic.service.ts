@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CONFIG_OPTION } from '../constant/constant';
+import { CONFIG_OPTION } from '../../constant/constant';
 
 @Injectable()
 export class MyDynamicService {

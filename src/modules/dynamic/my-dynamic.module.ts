@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { CONFIG_OPTION } from '../constant/constant';
 import { MyDynamicService } from './my-dynamic.service';
+import { CONFIG_OPTION } from '../../constant/constant';
 
 @Module({})
 export class MyDynamicModule {

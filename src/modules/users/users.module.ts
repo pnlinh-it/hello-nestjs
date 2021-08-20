@@ -6,13 +6,13 @@ import {
 } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { LoggerMiddleware } from '../middlewares/logger.middleware';
-import { LocalStrategy } from '../auth/strateties/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { EnvironmentVariables } from '../config/environment-variables';
+import { EnvironmentVariables } from '../../config/environment-variables';
+import { LoggerMiddleware } from '../../middlewares/logger.middleware';
 import { JwtStrategy } from '../auth/strateties/jwt.strategy';
+import { LocalStrategy } from '../auth/strateties/local.strategy';
 
 type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
 

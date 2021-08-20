@@ -1,11 +1,6 @@
 import { Inject, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { Module2Module } from './module2/module2.module';
-import { M1Service } from './module1/m1.service';
-import { MyDynamicModule } from './dynamic/my-dynamic.module';
-import { MyDynamicService } from './dynamic/my-dynamic.service';
 import { DatabaseConnection } from './database-connection';
 import { LogService } from './log.service';
 import { ConfigModule, ConfigService, ConfigType } from '@nestjs/config';
@@ -18,6 +13,11 @@ import { QuestionsModule } from './modules/questions/questions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import databaseNamespaceConfig from './config/database.namespace.config';
 import { TypeOrmConfigFactory } from './config/type-orm-config-factory';
+import { M1Service } from './modules/module1/m1.service';
+import { UsersModule } from './modules/users/users.module';
+import { Module2Module } from './modules/module2/module2.module';
+import { MyDynamicModule } from './modules/dynamic/my-dynamic.module';
+import { MyDynamicService } from './modules/dynamic/my-dynamic.service';
 //import configurationYml from './config/configuration-yml';
 
 type ConfigServiceEnv = ConfigService<EnvironmentVariables>;

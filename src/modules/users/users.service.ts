@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserInterface } from './interfaces/user.interface';
-import { IndexNotFoundException } from '../exceptions/index-not-found.exception';
+import { IndexNotFoundException } from '../../exceptions/index-not-found.exception';
 
 @Injectable()
 export class UsersService {

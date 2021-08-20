@@ -13,6 +13,7 @@ export class AnswerDto {
   @MaxLength(255)
   @MinLength(5)
   @IsNotEmpty()
+  @Length(1, 12)
   content: string;
 
   @ArrayMaxSize(4)

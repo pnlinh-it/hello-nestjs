@@ -3,10 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Question } from './entities/question';
 import { In, Like, Repository } from 'typeorm';
 import { Answer } from './entities/answer';
-import { CaslAbilityFactory } from '../../auth/casl/casl-ability-factory';
-import { ForbiddenError } from '@casl/ability';
-import { Article } from '../../auth/casl/article';
-import { Action } from '../../auth/casl/action';
+import { CaslAbilityFactory } from '../auth/casl/casl-ability-factory';
 
 @Controller('questions')
 export class QuestionsController {

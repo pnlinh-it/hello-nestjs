@@ -21,11 +21,11 @@ import {
 import { UsersService } from './users.service';
 import { Request, Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Rule1Pipe } from '../pipes/rule1.pipe';
 import { CreateAdminUserDto } from './dto/create-admin-user.dto';
-import { CheckUserGuard } from '../guards/check-user.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
+import { CheckUserGuard } from '../../guards/check-user.guard';
+import { Rule1Pipe } from '../../pipes/rule1.pipe';
 
 @UseGuards(CheckUserGuard)
 @SetMetadata('roles', ['staff'])
