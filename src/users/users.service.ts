@@ -31,7 +31,7 @@ export class UsersService {
   store(createUserDto: CreateUserDto) {
     const nextId = this.users.length + 1;
 
-    const newUser = { ...createUserDto, id: nextId };
+    const newUser = { ...createUserDto, id: nextId, isAdmin: true };
 
     this.users.push(newUser);
 

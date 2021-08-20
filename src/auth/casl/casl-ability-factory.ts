@@ -26,7 +26,7 @@ const AppAbilityConstructor = Ability as AbilityClass<AppAbility>;
 
 @Injectable()
 export class CaslAbilityFactory {
-  createForUser(user: UserInterface) {
+  createForUser(user: {}) {
     // https://casl.js.org/v5/en/advanced/typescript#ability-builder-type-inference
     // Builder required a Ability class (function)
     // AbilityBuilder constructor required a constructor parameter
