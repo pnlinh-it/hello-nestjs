@@ -1,13 +1,8 @@
-import {
-  ArgumentMetadata,
-  Injectable,
-  PipeTransform,
-  UnprocessableEntityException,
-} from '@nestjs/common';
+import { ArgumentMetadata, Injectable, PipeTransform, UnprocessableEntityException } from '@nestjs/common';
 import { UsersService } from '../modules/users/users.service';
 
 @Injectable()
-export class Rule1Pipe implements PipeTransform {
+export class UniqueEmailPipe implements PipeTransform {
   constructor(private readonly userService: UsersService) {}
 
   transform(value: any, metadata: ArgumentMetadata) {

@@ -1,13 +1,4 @@
-import {
-  ArrayMaxSize,
-  ArrayMinSize,
-  ArrayNotEmpty,
-  IsArray,
-  IsNotEmpty,
-  Length,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, ArrayNotEmpty, IsArray, IsNotEmpty, Length, MaxLength, MinLength } from 'class-validator';
 
 export class AnswerDto {
   @MaxLength(255)

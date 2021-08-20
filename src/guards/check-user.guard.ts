@@ -1,6 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
+import { Role } from '../modules/users/role';
+import { DECORATOR_ROLE_KEY } from '../constant/constant';
 
 type ActiveResult = boolean | Promise<boolean> | Observable<boolean>;
 
@@ -16,6 +18,7 @@ export class CheckUserGuard implements CanActivate {
     // To combine use getAllAndOverride or getAllAndMerge
     // https://docs.nestjs.com/fundamentals/execution-context#reflection-and-metadata
     const roles = this.reflector.get<string[]>('roles', context.getClass());
+    const roleEnums = this.reflector.get<Role[]>(DECORATOR_ROLE_KEY, context.getClass());
     if (!roles) {
       return true;
     }

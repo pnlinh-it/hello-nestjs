@@ -3,9 +3,7 @@ import { Request, Response } from 'express';
 import { IndexNotFoundException } from '../exceptions/index-not-found.exception';
 
 @Catch(IndexNotFoundException)
-export class IndexNotFoundExceptionFilter
-  implements ExceptionFilter<IndexNotFoundException>
-{
+export class IndexNotFoundExceptionFilter implements ExceptionFilter<IndexNotFoundException> {
   catch(exception: IndexNotFoundException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();

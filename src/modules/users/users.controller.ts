@@ -1,40 +1,40 @@
 import {
-  Query,
   Body,
   Controller,
+  Delete,
+  Get,
   Header,
   HttpCode,
   HttpStatus,
   Param,
-  Get,
+  ParseIntPipe,
   Post,
-  Delete,
+  Put,
+  Query,
   Redirect,
   Req,
   Res,
-  ParseIntPipe,
-  Put,
-  UsePipes,
-  UseGuards,
   SetMetadata,
+  UseGuards,
+  UsePipes,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Request, Response } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { CreateAdminUserDto } from './dto/create-admin-user.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { CheckUserGuard } from '../../guards/check-user.guard';
-import { Rule1Pipe } from '../../pipes/rule1.pipe';
+import { UniqueEmailPipe } from '../../pipes/unique-email.pipe';
+import { Role } from './role';
+import { Roles } from '../../decorators/guards/role.decorator';
+import { Auth } from '../../decorators/guards/auth.decorator';
 
 @UseGuards(CheckUserGuard)
 @SetMetadata('roles', ['staff'])
 @Controller('users')
+@Roles(Role.Admin, Role.User)
 export class UsersController {
-  constructor(
-    private userService: UsersService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private userService: UsersService, private jwtService: JwtService) {}
 
   @UseGuards(CheckUserGuard)
   @SetMetadata('roles', ['admin'])
@@ -80,16 +80,13 @@ export class UsersController {
   @Post()
   @Header('Cache-Control', 'true')
   @HttpCode(HttpStatus.CREATED)
-  @UsePipes(Rule1Pipe)
+  @UsePipes(UniqueEmailPipe)
   store(@Body() createUserDto: CreateAdminUserDto) {
     return this.userService.store(createUserDto);
   }
 
   @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() patch: Partial<CreateUserDto>,
-  ) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() patch: Partial<CreateUserDto>) {
     return this.userService.update(id, patch);
   }
 
@@ -102,7 +99,7 @@ export class UsersController {
   // @UseGuards(CheckUserGuard)
   // @UseGuards(AuthGuard('local'))
   // @UseGuards(CheckUserGuard, AuthGuard('local'))
-  @UseGuards(AuthGuard('local'))
+  @Auth('local')
   @Post('login')
   login(@Req() req) {
     const payload = { username: req.user.username, sub: req.user.userId };
@@ -111,7 +108,7 @@ export class UsersController {
     };
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @Auth('jwt')
   @Post('profile')
   profile(@Req() req) {
     return req.user;

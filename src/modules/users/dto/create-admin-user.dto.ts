@@ -15,11 +15,11 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CreateUserDto } from './create-user.dto';
-import { IsLongerThan } from '../../../validators/IsLongerThan';
+import { IsLongerThan } from '../../../decorators/validation/IsLongerThan';
 import { AnswerDto } from './answer.dto';
 import { Type } from 'class-transformer';
 import { Optional } from '@nestjs/common';
-import { IsNotBlank } from '../../../validators/IsNotBlank';
+import { IsNotBlank } from '../../../decorators/validation/IsNotBlank';
 
 export class CreateAdminUserDto extends CreateUserDto {
   @IsString()

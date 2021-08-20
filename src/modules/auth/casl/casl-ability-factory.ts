@@ -31,9 +31,7 @@ export class CaslAbilityFactory {
     // Builder required a Ability class (function)
     // AbilityBuilder constructor required a constructor parameter
     // We can pass Ability to it: new AbilityBuilder(Ability)
-    const { can, cannot, build } = new AbilityBuilder<AppAbility>(
-      AppAbilityConstructor,
-    );
+    const { can, cannot, build } = new AbilityBuilder<AppAbility>(AppAbilityConstructor);
 
     if (user.isAdmin) {
       can(Action.Manage, 'all'); // read-write access to everything
@@ -46,8 +44,7 @@ export class CaslAbilityFactory {
 
     return build({
       // https://casl.js.org/v5/en/guide/subject-type-detection#use-classes-as-subject-types
-      detectSubjectType: (item) =>
-        item.constructor as ExtractSubjectType<Subjects>,
+      detectSubjectType: (item) => item.constructor as ExtractSubjectType<Subjects>,
     });
   }
 }

@@ -1,9 +1,4 @@
-import {
-  Catch,
-  ArgumentsHost,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { IndexNotFoundException } from '../exceptions/index-not-found.exception';
 
@@ -17,18 +12,12 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
     super.catch(exception, host);
   }
 
-  private static handleIndexNotFound(
-    exception: IndexNotFoundException,
-    host: ArgumentsHost,
-  ) {
+  private static handleIndexNotFound(exception: IndexNotFoundException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
 
-    const status =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : HttpStatus.INTERNAL_SERVER_ERROR;
+    const status = exception instanceof HttpException ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
     response.status(status).json({
       statusCode: status,
