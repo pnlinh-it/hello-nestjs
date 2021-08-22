@@ -15,7 +15,6 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CreateUserDto } from './create-user.dto';
-import { IsLongerThan } from '../../../decorators/validation/IsLongerThan';
 import { AnswerDto } from './answer.dto';
 import { Type } from 'class-transformer';
 import { Optional } from '@nestjs/common';

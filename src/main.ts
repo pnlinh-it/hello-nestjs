@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { IndexNotFoundExceptionFilter } from './filters/index-not-found-exception.filter';
 import { HttpStatus, ValidationPipe } from '@nestjs/common';
-import { ValidationError } from '@nestjs/common/interfaces/external/validation-error.interface';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -36,9 +35,9 @@ async function bootstrap() {
       // Validation of other properties will continue
       stopAtFirstError: true,
       // Handle at ./node_modules/@nestjs/common/pipes/validation.pipe.js#63
-      exceptionFactory: (errors: ValidationError[]) => {
-        return errors;
-      },
+      // exceptionFactory: (errors: ValidationError[]) => {
+      //   return errors;
+      // },
       // Transform the payload to defined (dto) class
       transform: true,
       // Send target and property's value into validation error object

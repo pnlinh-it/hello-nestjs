@@ -18,6 +18,8 @@ import { UsersModule } from './modules/users/users.module';
 import { Module2Module } from './modules/module2/module2.module';
 import { MyDynamicModule } from './modules/dynamic/my-dynamic.module';
 import { MyDynamicService } from './modules/dynamic/my-dynamic.service';
+import { QuizModule } from './modules/quiz/quiz.module';
+import { QuizQuestionModule } from './modules/quiz-question/quiz-question.module';
 //import configurationYml from './config/configuration-yml';
 
 type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
@@ -100,6 +102,8 @@ const connectionFactory = {
     }),
     ExportServiceModule,
     QuestionsModule,
+    QuizModule,
+    QuizQuestionModule,
   ],
   controllers: [AppController],
   providers: [AppService, aliasM1ServiceFactory, connectionFactory, LogService],

@@ -7,7 +7,8 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-op
 import { DatabaseConfig } from './database.config';
 import { Question } from '../modules/questions/entities/question';
 import { Answer } from '../modules/questions/entities/answer';
-import { query } from 'express';
+import { Quiz } from '../modules/quiz/entities/quiz.entity';
+import { QuizQuestion } from '../modules/quiz-question/entities/quiz-question';
 
 @Injectable()
 export class TypeOrmConfigFactory implements TypeOrmOptionsFactory {
@@ -34,7 +35,7 @@ export class TypeOrmConfigFactory implements TypeOrmOptionsFactory {
       password: dbConfig.password,
       database: dbConfig.database,
       synchronize: true,
-      entities: [Question, Answer],
+      entities: [QuizQuestion, Quiz, Question, Answer],
     };
   }
 }

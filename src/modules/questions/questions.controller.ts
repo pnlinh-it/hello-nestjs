@@ -1,7 +1,7 @@
 import { Controller, Get, Post } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Question } from './entities/question';
-import { In, Like, Repository } from 'typeorm';
+import { Repository, Transaction } from 'typeorm';
 import { Answer } from './entities/answer';
 import { CaslAbilityFactory } from '../auth/casl/casl-ability-factory';
 
@@ -17,41 +17,41 @@ export class QuestionsController {
   // Or use separate class
   // Loading entities
 
-  @Get()
   // Role here
   // Policy will use at service
-  //
+  @Get()
   async allQuestions() {
-    const question = await this.questions.findOne(2);
-    question.answers = await this.answers.find({ where: { questionId: 2 } });
+    // const question = await this.questions.findOne(2);
+    // question.answers = await this.answers.find({ where: { questionId: 2 } });
     //const ability = this.abilityFactory.createForUser({});
     // ForbiddenError.from(ability).throwUnlessCan(Action.Read);
-    return '';
-    // return await this.questions.find({ relations: ['answers'] });
+    return await this.questions.find({ relations: ['answers'] });
   }
 
   @Get('answers')
   async allAnswers() {
     return await this.answers.find({
-      where: { questionId: 1 },
+      // where: { questionId: 1 },
       relations: ['question'],
     });
   }
 
   @Post()
+  @Transaction()
   async store() {
     const question = { content: 'What your name' };
-    const newQuestion = await this.questions.save(question);
+    const newQuestion = await this.questions.save(question, { transaction: false });
 
     const answer: Partial<Answer> = {
       content: 'Linh Pham',
-      questionId: newQuestion.id,
+      //questionId: newQuestion.id,
+      question: newQuestion,
     };
 
-    await this.answers.save(answer);
+    await this.answers.save(answer, { transaction: false });
 
-    return await this.questions.findOne({
-      where: { id: newQuestion.id },
+    // https://github.com/typeorm/typeorm/issues/5694
+    return await this.questions.findOne(newQuestion.id, {
       relations: ['answers'],
     });
   }

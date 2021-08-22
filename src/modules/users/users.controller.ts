@@ -20,7 +20,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Request, Response } from 'express';
-import { CreateUserDto } from './dto/create-user.dto';
 import { CreateAdminUserDto } from './dto/create-admin-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { CheckUserGuard } from '../../guards/check-user.guard';
@@ -28,6 +27,7 @@ import { UniqueEmailPipe } from '../../pipes/unique-email.pipe';
 import { Role } from './role';
 import { Roles } from '../../decorators/guards/role.decorator';
 import { Auth } from '../../decorators/guards/auth.decorator';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @UseGuards(CheckUserGuard)
 @SetMetadata('roles', ['staff'])
@@ -86,7 +86,7 @@ export class UsersController {
   }
 
   @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() patch: Partial<CreateUserDto>) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() patch: UpdateUserDto) {
     return this.userService.update(id, patch);
   }
 
