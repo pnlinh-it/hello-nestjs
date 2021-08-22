@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, UpdateDateColumn } from 'typeorm';
 import { Primary } from '../../../decorators/typeorm/primary';
 import { String } from '../../../decorators/typeorm/string';
+import { UserRole } from './user-role.entity';
 
 @Entity('users')
 export class User {
@@ -21,6 +22,9 @@ export class User {
 
   @UpdateDateColumn({ name: 'updated_at', type: 'datetime' })
   updatedAt: Date;
+
+  @OneToMany(() => UserRole, (userRole) => userRole.role)
+  userRoles: UserRole[];
 
   isAdmin: boolean;
 }

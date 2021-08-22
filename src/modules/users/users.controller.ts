@@ -28,6 +28,7 @@ import { Roles } from '../../decorators/guards/role.decorator';
 import { Auth } from '../../decorators/guards/auth.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { AssignRolesDto } from './dto/assign-roles.dto';
 
 @UseGuards(CheckUserGuard)
 @SetMetadata('roles', ['staff'])
@@ -94,6 +95,11 @@ export class UsersController {
   @HttpCode(HttpStatus.NO_CONTENT)
   destroy(@Param('id', ParseIntPipe) id) {
     return this.userService.destroy(id);
+  }
+
+  @Post(':userId/roles')
+  addRoles(@Param('userId', ParseIntPipe) userId: number, @Body() assignRolesDto: AssignRolesDto) {
+    return this.userService.assignRoles(userId, assignRolesDto);
   }
 
   // @UseGuards(CheckUserGuard)

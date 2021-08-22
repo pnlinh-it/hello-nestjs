@@ -12,4 +12,8 @@ export class BaseRepository<T> extends Repository<T> {
 
     return (insertResult.raw as ResultSetHeader).insertId;
   }
+
+  async insertWithoutReload(values: QueryDeepPartialEntity<T> | QueryDeepPartialEntity<T>[]) {
+    return this.createQueryBuilder().insert().values(values).updateEntity(false).execute();
+  }
 }

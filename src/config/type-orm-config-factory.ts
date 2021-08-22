@@ -11,6 +11,7 @@ import { Quiz } from '../modules/quiz/entities/quiz.entity';
 import { QuizQuestion } from '../modules/quiz-question/entities/quiz-question';
 import { User } from '../modules/users/entities/user.entity';
 import { Role } from '../modules/role/entities/role.entity';
+import { UserRole } from '../modules/users/entities/user-role.entity';
 
 @Injectable()
 export class TypeOrmConfigFactory implements TypeOrmOptionsFactory {
@@ -37,7 +38,7 @@ export class TypeOrmConfigFactory implements TypeOrmOptionsFactory {
       password: dbConfig.password,
       database: dbConfig.database,
       synchronize: true,
-      entities: [QuizQuestion, Quiz, Question, Answer, User, Role],
+      entities: [QuizQuestion, Quiz, Question, Answer, User, Role, UserRole],
     };
   }
 }

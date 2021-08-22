@@ -9,6 +9,8 @@ import { LoggerMiddleware } from '../../middlewares/logger.middleware';
 import { AuthModule } from '../auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user-repository';
+import { UserRoleRepository } from './user-role-repository';
+import { RoleRepository } from '../role/role-repository';
 
 type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
 
@@ -19,7 +21,7 @@ type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
  */
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([UserRepository, RoleRepository, UserRoleRepository]),
     PassportModule,
     AuthModule,
     JwtModule.registerAsync({
