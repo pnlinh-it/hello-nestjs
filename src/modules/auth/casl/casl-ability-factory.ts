@@ -8,9 +8,9 @@ import {
 import { Action } from './action';
 import { Injectable } from '@nestjs/common';
 import { Article } from './article';
-import { UserInterface } from '../../users/interfaces/user.interface';
+import { User } from '../../users/entities/user.entity';
 
-type Subjects = InferSubjects<typeof Article | UserInterface> | 'all';
+type Subjects = InferSubjects<typeof Article | User> | 'all';
 // https://casl.js.org/v5/en/advanced/typescript#application-ability
 
 // A type that alias to Ability<[Action, Subjects]>
@@ -26,7 +26,7 @@ const AppAbilityConstructor = Ability as AbilityClass<AppAbility>;
 
 @Injectable()
 export class CaslAbilityFactory {
-  createForUser(user: UserInterface) {
+  createForUser(user: User) {
     // https://casl.js.org/v5/en/advanced/typescript#ability-builder-type-inference
     // Builder required a Ability class (function)
     // AbilityBuilder constructor required a constructor parameter

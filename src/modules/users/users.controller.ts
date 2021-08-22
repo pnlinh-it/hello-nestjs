@@ -20,7 +20,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Request, Response } from 'express';
-import { CreateAdminUserDto } from './dto/create-admin-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { CheckUserGuard } from '../../guards/check-user.guard';
 import { UniqueEmailPipe } from '../../pipes/unique-email.pipe';
@@ -28,6 +27,7 @@ import { Role } from './role';
 import { Roles } from '../../decorators/guards/role.decorator';
 import { Auth } from '../../decorators/guards/auth.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @UseGuards(CheckUserGuard)
 @SetMetadata('roles', ['staff'])
@@ -81,7 +81,7 @@ export class UsersController {
   @Header('Cache-Control', 'true')
   @HttpCode(HttpStatus.CREATED)
   @UsePipes(UniqueEmailPipe)
-  store(@Body() createUserDto: CreateAdminUserDto) {
+  store(@Body() createUserDto: CreateUserDto) {
     return this.userService.store(createUserDto);
   }
 

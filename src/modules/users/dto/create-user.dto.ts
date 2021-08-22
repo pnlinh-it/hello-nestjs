@@ -1,26 +1,29 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString, Max, MaxLength } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { IsEmail, IsNumber, IsString, Max, MaxLength, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsRequired } from '../../../decorators/validation/IsRequired';
 
 export class CreateUserDto {
+  @MaxLength(255)
   @IsEmail()
-  @IsNotEmpty()
+  @IsString()
+  @IsRequired()
   email: string;
 
-  @MaxLength(20, {
-    message: 'Title is too long',
+  @MaxLength(100, {
+    message: 'Name is too long',
     context: {
       errorCode: 1003,
       developerNote: 'Some additional note.',
     },
   })
   @IsString()
-  @IsNotEmpty()
+  @IsRequired()
   name: string;
 
-  //@Type(() => Number)
-  @Transform(({ value }) => Number(value))
-  @Max(5)
+  @Type(() => Number)
+  @Max(200)
+  @Min(0)
   @IsNumber()
-  @IsNotEmpty()
+  @IsRequired()
   age: number;
 }

@@ -7,6 +7,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from '../../config/environment-variables';
 import { LoggerMiddleware } from '../../middlewares/logger.middleware';
 import { AuthModule } from '../auth/auth.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserRepository } from './user-repository';
 
 type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
 
@@ -17,6 +19,7 @@ type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
  */
 @Module({
   imports: [
+    TypeOrmModule.forFeature([UserRepository]),
     PassportModule,
     AuthModule,
     JwtModule.registerAsync({

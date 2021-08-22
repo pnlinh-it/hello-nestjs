@@ -1,66 +1,54 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserInterface } from './interfaces/user.interface';
-import { IndexNotFoundException } from '../../exceptions/index-not-found.exception';
+import { UserRepository } from './user-repository';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { Not } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  private users: UserInterface[] = [];
+  constructor(private users: UserRepository) {}
 
   index() {
-    return this.users;
+    return this.users.find();
   }
 
   show(id: number) {
-    const user = this.users.find((user) => user.id === id);
+    return this.users.findOne(id);
+  }
 
-    if (!user) {
-      throw new IndexNotFoundException(id);
+  async store(createUserDto: CreateUserDto) {
+    const existUser = await this.users.findOne({ where: { email: createUserDto.email } });
+
+    if (existUser) {
+      throw new UnprocessableEntityException('Email is already exist.');
     }
 
-    return user;
+    return this.users.save(createUserDto);
   }
 
-  store(createUserDto: CreateUserDto) {
-    const nextId = this.users.length + 1;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const newUser = await this.users.preload({ ...updateUserDto, id: id });
 
-    const newUser = { ...createUserDto, id: nextId, isAdmin: true };
-
-    this.users.push(newUser);
-
-    return newUser;
-  }
-
-  update(id: number, patch: Partial<CreateUserDto>) {
-    const matcher = (user) => user.id === id;
-
-    const user = this.users.find((user) => matcher(user));
-    const index = this.users.findIndex((user) => matcher(user));
-
-    if (!user) {
+    if (!newUser) {
       throw new NotFoundException();
     }
 
-    const newUser = { ...user, ...patch };
-
-    this.users.splice(index, 1);
-
-    this.users.push(newUser);
-
-    return newUser;
-  }
-
-  destroy(id: number) {
-    const index = this.users.findIndex((user) => user.id === id);
-
-    if (index < 0) {
-      throw new NotFoundException();
+    const email = updateUserDto.email;
+    if (email != null) {
+      const existUser = await this.users.findOne({ where: { email: email, id: Not(id) } });
+      if (existUser) {
+        throw new UnprocessableEntityException('Email is already exist.');
+      }
     }
 
-    this.users.splice(index, 1);
+    return this.users.save(newUser);
   }
 
-  findByEmail(email: string): UserInterface | undefined {
-    return this.users.find((user) => user.email === email);
+  async destroy(id: number) {
+    await this.users.delete(id);
+  }
+
+  findByEmail(email: string) {
+    return this.users.find({ where: { email: email } });
   }
 }
