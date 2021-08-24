@@ -3,14 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Question } from './entities/question';
 import { Repository, Transaction } from 'typeorm';
 import { Answer } from './entities/answer';
-import { CaslAbilityFactory } from '../auth/casl/casl-ability-factory';
 
 @Controller('questions')
 export class QuestionsController {
   constructor(
     @InjectRepository(Question) private questions: Repository<Question>,
     @InjectRepository(Answer) private answers: Repository<Answer>,
-    private abilityFactory: CaslAbilityFactory,
   ) {}
 
   // Add config for database

@@ -21,6 +21,8 @@ import { MyDynamicService } from './modules/dynamic/my-dynamic.service';
 import { QuizModule } from './modules/quiz/quiz.module';
 import { QuizQuestionModule } from './modules/quiz-question/quiz-question.module';
 import { RoleModule } from './modules/role/role.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { ProfileModule } from './modules/profile/profile.module';
 //import configurationYml from './config/configuration-yml';
 
 type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
@@ -42,7 +44,6 @@ const connectionFactory = {
 
 @Module({
   imports: [
-    UsersModule,
     Module2Module,
     MyDynamicModule.register(option),
     ConfigModule.forRoot({
@@ -106,6 +107,9 @@ const connectionFactory = {
     QuizModule,
     QuizQuestionModule,
     RoleModule,
+    UsersModule,
+    AuthModule,
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService, aliasM1ServiceFactory, connectionFactory, LogService],

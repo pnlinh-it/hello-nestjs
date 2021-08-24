@@ -1,16 +1,18 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
+import { User } from '../../users/entities/user.entity';
+import { UsersService } from '../../users/users.service';
 
 @Injectable()
 // This class must be instantiate while application start
 // Typically, to instantiate while application start we add into Module providers
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  constructor() {
-    super();
+  constructor(private userService: UsersService) {
+    super({ usernameField: 'email' });
   }
 
-  async validate(username: string, password: string): Promise<any> {
-    return { userId: 12, username: 'Linh' };
+  async validate(email: string, password: string): Promise<User> {
+    return await this.userService.findByEmailPassword(email, password);
   }
 }

@@ -2,17 +2,12 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { EnvironmentVariables } from '../../config/environment-variables';
 import { LoggerMiddleware } from '../../middlewares/logger.middleware';
-import { AuthModule } from '../auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './user-repository';
 import { UserRoleRepository } from './user-role-repository';
 import { RoleRepository } from '../role/role-repository';
-
-type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
+import { SocialUserRepository } from './social-user-repository';
 
 /**
  * To use UserService in other module
@@ -21,16 +16,13 @@ type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
  */
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserRepository, RoleRepository, UserRoleRepository]),
+    TypeOrmModule.forFeature([
+      UserRepository,
+      RoleRepository,
+      UserRoleRepository,
+      SocialUserRepository,
+    ]),
     PassportModule,
-    AuthModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigServiceEnv) => ({
-        secret: configService.get('jwtKey'),
-      }),
-      inject: [ConfigService],
-    }),
   ],
   controllers: [UsersController],
   providers: [UsersService],

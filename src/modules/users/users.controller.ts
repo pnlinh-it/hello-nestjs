@@ -20,7 +20,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Request, Response } from 'express';
-import { JwtService } from '@nestjs/jwt';
 import { CheckUserGuard } from '../../guards/check-user.guard';
 import { UniqueEmailPipe } from '../../pipes/unique-email.pipe';
 import { Role } from './role';
@@ -35,7 +34,7 @@ import { AssignRolesDto } from './dto/assign-roles.dto';
 @Controller('users')
 @Roles(Role.Admin, Role.User)
 export class UsersController {
-  constructor(private userService: UsersService, private jwtService: JwtService) {}
+  constructor(private userService: UsersService) {}
 
   @UseGuards(CheckUserGuard)
   @SetMetadata('roles', ['admin'])
@@ -102,17 +101,17 @@ export class UsersController {
     return this.userService.assignRoles(userId, assignRolesDto);
   }
 
-  // @UseGuards(CheckUserGuard)
-  // @UseGuards(AuthGuard('local'))
-  // @UseGuards(CheckUserGuard, AuthGuard('local'))
-  @Auth('local')
-  @Post('login')
-  login(@Req() req) {
-    const payload = { username: req.user.username, sub: req.user.userId };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
-  }
+  // // @UseGuards(CheckUserGuard)
+  // // @UseGuards(AuthGuard('local'))
+  // // @UseGuards(CheckUserGuard, AuthGuard('local'))
+  // @Auth('local')
+  // @Post('login')
+  // login(@Req() req) {
+  //   const payload = { username: req.user.username, sub: req.user.userId };
+  //   return {
+  //     access_token: this.jwtService.sign(payload),
+  //   };
+  // }
 
   @Auth('jwt')
   @Post('profile')

@@ -1,4 +1,12 @@
-import { ArgumentsHost, Catch, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  Catch,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
+import { InternalOAuthError } from 'passport-oauth';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { IndexNotFoundException } from '../exceptions/index-not-found.exception';
 import { EntityNotFoundError } from 'typeorm';
@@ -12,6 +20,10 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
 
     if (exception instanceof EntityNotFoundError) {
       return super.catch(new NotFoundException(), host);
+    }
+
+    if (exception instanceof InternalOAuthError) {
+      return super.catch(new UnprocessableEntityException('Invalid token.'), host);
     }
 
     super.catch(exception, host);
