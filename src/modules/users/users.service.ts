@@ -123,7 +123,6 @@ export class UsersService {
   }
 
   async generateUsername(displayName: string) {
-    const newText = slugify('御尚樓粵菜餐廳', { replacement: '_', lower: true, strict: true });
     const username = slugify(displayName, { replacement: '_', lower: true, strict: true });
 
     return await this.makeSureUsernameIsUnique(username);

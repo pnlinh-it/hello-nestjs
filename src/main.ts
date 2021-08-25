@@ -1,8 +1,8 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { IndexNotFoundExceptionFilter } from './filters/index-not-found-exception.filter';
-import { HttpStatus, ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, HttpStatus, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,6 +12,9 @@ async function bootstrap() {
     // Under line will take higher priority.
     new AllExceptionsFilter(httpAdapter),
     new IndexNotFoundExceptionFilter(),
+  );
+  app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(app.get(Reflector), { strategy: 'excludeAll' }),
   );
   app.useGlobalPipes(
     new ValidationPipe({
