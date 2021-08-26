@@ -4,9 +4,10 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from '../../../config/environment-variables';
 import { UsersService } from '../../users/users.service';
+import { StrategyEnum } from './strategy.enum';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, StrategyEnum.JWT) {
   constructor(
     private configService: ConfigService<EnvironmentVariables>,
     private userService: UsersService,

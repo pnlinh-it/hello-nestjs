@@ -31,11 +31,11 @@ export class User {
   password: string;
 
   @CreateDateColumn({ name: 'created_at', type: 'datetime' })
-  @Expose({ name: 'created_at' })
+  @Expose()
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at', type: 'datetime' })
-  @Expose({ name: 'updated_at' })
+  @Expose()
   updatedAt: Date;
 
   @OneToMany(() => UserRole, (userRole) => userRole.user)

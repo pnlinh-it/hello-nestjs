@@ -28,6 +28,7 @@ import { Auth } from '../../decorators/guards/auth.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AssignRolesDto } from './dto/assign-roles.dto';
+import { StrategyEnum } from '../auth/strateties/strategy.enum';
 
 @UseGuards(CheckUserGuard)
 @SetMetadata('roles', ['staff'])
@@ -113,7 +114,7 @@ export class UsersController {
   //   };
   // }
 
-  @Auth('jwt')
+  @Auth(StrategyEnum.JWT)
   @Post('profile')
   profile(@Req() req) {
     return req.user;

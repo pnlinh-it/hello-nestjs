@@ -3,9 +3,9 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { Auth } from '../../decorators/guards/auth.decorator';
-import { OauthLoginDto } from './dto/oauth-login.dto';
 import { User } from '../../decorators/auth/user.decorator';
 import { User as UserEntity } from '../../modules/users/entities/user.entity';
+import { StrategyEnum } from './strateties/strategy.enum';
 
 @Controller('auth')
 export class AuthController {
@@ -25,15 +25,21 @@ export class AuthController {
 
   @Post('login-passport')
   @HttpCode(HttpStatus.OK)
-  @Auth('local')
+  @Auth(StrategyEnum.Local)
   // loginPassport(@Req() request: AuthenticatedRequest) {
   loginPassport(@User() user: UserEntity) {
     return this.authService.generateToken(user);
   }
 
   @Post('oauth/facebook')
-  @Auth('facebook-token')
-  loginFacebook(@Body() oauthLoginDto: OauthLoginDto, @User() user: UserEntity) {
+  @Auth(StrategyEnum.FacebookToken)
+  loginFacebook(@User() user: UserEntity) {
+    return user;
+  }
+
+  @Post('oauth/google')
+  @Auth(StrategyEnum.GoogleToken)
+  loginGoogle(@User() user: UserEntity) {
     return user;
   }
 }

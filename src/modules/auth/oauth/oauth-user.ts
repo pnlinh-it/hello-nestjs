@@ -12,11 +12,11 @@ export class OauthUser {
   avatar?: string;
   raw: any;
 
-  public static fromFacebook(profile: any, accessToken: string): OauthUser {
+  public static fromRaw(profile: any, accessToken: string, provider: Provider): OauthUser {
     return {
       uid: profile.id,
       accessToken: accessToken,
-      provider: Provider.Facebook,
+      provider: provider,
       fullName: profile.displayName,
       email: profile.emails?.[0]?.value,
       avatar: profile.photos?.[0]?.value,

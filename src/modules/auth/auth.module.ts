@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from '../../config/environment-variables';
 import { AuthController } from './auth.controller';
 import { FacebookStrategy } from './strateties/facebook.strategy';
+import { GoogleTokenStrategy } from './strateties/google-token.strategy';
 
 type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
 
@@ -23,7 +24,14 @@ type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
       inject: [ConfigService],
     }),
   ],
-  providers: [CaslAbilityFactory, LocalStrategy, JwtStrategy, FacebookStrategy, AuthService],
+  providers: [
+    CaslAbilityFactory,
+    LocalStrategy,
+    JwtStrategy,
+    FacebookStrategy,
+    GoogleTokenStrategy,
+    AuthService,
+  ],
   controllers: [AuthController],
   exports: [CaslAbilityFactory],
 })

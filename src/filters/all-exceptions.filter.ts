@@ -26,6 +26,10 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
       return super.catch(new UnprocessableEntityException('Invalid token.'), host);
     }
 
+    if (exception instanceof InternalOAuthError) {
+      return super.catch(new UnprocessableEntityException('Invalid token.'), host);
+    }
+
     super.catch(exception, host);
   }
 

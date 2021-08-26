@@ -13,6 +13,8 @@ import { SocialUserRepository } from './social-user-repository';
 import { SocialUser } from './entities/social-user.entity';
 import slugify from 'slugify';
 import * as crypto from 'crypto';
+import { plainToClass } from 'class-transformer';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -119,7 +121,7 @@ export class UsersService {
 
     await this.socialUsers.insertWithoutReload(SocialUser.fromOauthUser(oauthUser, newUser.id));
 
-    return newUser;
+    return plainToClass(User, newUser);
   }
 
   async generateUsername(displayName: string) {
