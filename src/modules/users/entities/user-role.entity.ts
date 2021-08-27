@@ -1,9 +1,19 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  Unique,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Primary } from '../../../decorators/typeorm/primary';
 import { User } from './user.entity';
 import { Role } from '../../role/entities/role.entity';
 
 @Entity('user_role')
+@Unique(['userId', 'roleId'])
+// @Index('user_id_role_id_UNIQUE', ['userId', 'roleId'], { unique: true })
 export class UserRole {
   @Primary()
   id: number;
