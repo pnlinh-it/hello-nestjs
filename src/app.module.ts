@@ -4,9 +4,8 @@ import { AppService } from './app.service';
 import { DatabaseConnection } from './database-connection';
 import { LogService } from './log.service';
 import { ConfigModule, ConfigService, ConfigType } from '@nestjs/config';
-import configuration from './config/configuration';
-import { DatabaseConfig } from './config/database.config';
-import { EnvironmentVariables } from './config/environment-variables';
+import configuration from './config/config.factory';
+import { AppConfig } from './config/app-config';
 import { ExportServiceModule } from './modules/export-service/export-service.module';
 import { ExportServiceService } from './modules/export-service/export-service.service';
 import { QuestionsModule } from './modules/questions/questions.module';
@@ -23,9 +22,11 @@ import { QuizQuestionModule } from './modules/quiz-question/quiz-question.module
 import { RoleModule } from './modules/role/role.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ProfileModule } from './modules/profile/profile.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { MailModule } from './modules/mail/mail.module';
+import { Database } from './config/types/database';
 //import configurationYml from './config/configuration-yml';
-
-type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
 
 const option = { password: 'awdawd' };
 
@@ -73,8 +74,8 @@ const connectionFactory = {
       // ) => {
       //   // ConfigModule.forFeature(databaseConfig)
       //   // Get all configuration or use namespace
-      //   const dbConfig = configService.get<DatabaseConfig>('database');
-      //   // configService.get<DatabaseConfig>('database');
+      //   const dbConfig = configService.get<Database>('database');
+      //   // configService.get<Database>('database');
       //   // configService.get('database', { infer: true })
       //   return {
       //     type: 'mysql',
@@ -110,6 +111,11 @@ const connectionFactory = {
     UsersModule,
     AuthModule,
     ProfileModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+      exclude: ['/api*', '/client*'],
+    }),
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService, aliasM1ServiceFactory, connectionFactory, LogService],
@@ -125,13 +131,13 @@ export class AppModule {
     @Inject('CONNECTION')
     private readonly databaseConnection: DatabaseConnection,
     private configService: ConfigService,
-    private configService2: ConfigService<EnvironmentVariables>,
+    private configService2: ConfigService<AppConfig>,
     private exportModule: ExportServiceService,
     @Inject(databaseNamespaceConfig.KEY)
     private dbConfig2: ConfigType<typeof databaseNamespaceConfig>,
   ) {
     const host = configService2.get('database', { infer: true }).host;
-    const dbConfig = configService.get<DatabaseConfig>('database');
+    const dbConfig = configService.get<Database>('database');
     console.log(dbConfig2);
     console.log(dbConfig);
     // dbConfig2.port

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from '../../users/entities/user.entity';
 import { UsersService } from '../../users/users.service';
 import { ConfigService } from '@nestjs/config';
-import { EnvironmentVariables } from '../../../config/environment-variables';
+import { AppConfig } from '../../../config/app-config';
 import { OauthUser } from '../oauth/oauth-user';
 // import { PassportGoogleStrategy } from './passport-google.strategy';
 import { Google } from '../../../config/types/google';
@@ -18,10 +18,7 @@ export class GoogleTokenStrategy extends PassportStrategy(
   MyCustomGoogleStrategy,
   StrategyEnum.GoogleToken,
 ) {
-  constructor(
-    private configService: ConfigService<EnvironmentVariables>,
-    private userService: UsersService,
-  ) {
+  constructor(private configService: ConfigService<AppConfig>, private userService: UsersService) {
     super({
       clientID: configService.get<Google>('google').clientId,
       clientSecret: configService.get<Google>('google').clientSecret,

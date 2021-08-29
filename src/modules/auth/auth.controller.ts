@@ -6,6 +6,7 @@ import { Auth } from '../../decorators/guards/auth.decorator';
 import { User } from '../../decorators/auth/user.decorator';
 import { User as UserEntity } from '../../modules/users/entities/user.entity';
 import { StrategyEnum } from './strateties/strategy.enum';
+import { SendResetPasswordEmailDto } from './dto/password/send-reset-password-email.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -41,5 +42,10 @@ export class AuthController {
   @Auth(StrategyEnum.GoogleToken)
   loginGoogle(@User() user: UserEntity) {
     return user;
+  }
+
+  @Post('password/email')
+  sendResetLinkEmail(@Body() sendResetPasswordEmail: SendResetPasswordEmailDto) {
+    return this.authService.sendResetLinkEmail(sendResetPasswordEmail);
   }
 }

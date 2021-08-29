@@ -6,16 +6,20 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { EnvironmentVariables } from '../../config/environment-variables';
+import { AppConfig } from '../../config/app-config';
 import { AuthController } from './auth.controller';
 import { FacebookStrategy } from './strateties/facebook.strategy';
 import { GoogleTokenStrategy } from './strateties/google-token.strategy';
+import { PasswordResetModule } from '../password-reset/password-reset.module';
+import { MailModule } from '../mail/mail.module';
 
-type ConfigServiceEnv = ConfigService<EnvironmentVariables>;
+type ConfigServiceEnv = ConfigService<AppConfig>;
 
 @Module({
   imports: [
     UsersModule,
+    MailModule,
+    PasswordResetModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigServiceEnv) => ({

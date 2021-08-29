@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from '../../users/entities/user.entity';
 import { UsersService } from '../../users/users.service';
 import { ConfigService } from '@nestjs/config';
-import { EnvironmentVariables } from '../../../config/environment-variables';
+import { AppConfig } from '../../../config/app-config';
 import { Facebook } from '../../../config/types/facebook';
 import { OauthUser } from '../oauth/oauth-user';
 import { Provider } from '../oauth/provider';
@@ -17,10 +17,7 @@ export class FacebookStrategy extends PassportStrategy(
   FacebookTokenStrategy,
   StrategyEnum.FacebookToken,
 ) {
-  constructor(
-    private configService: ConfigService<EnvironmentVariables>,
-    private userService: UsersService,
-  ) {
+  constructor(private configService: ConfigService<AppConfig>, private userService: UsersService) {
     super({
       clientID: configService.get<Facebook>('facebook').clientId,
       clientSecret: configService.get<Facebook>('facebook').clientSecret,

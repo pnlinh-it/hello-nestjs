@@ -3,9 +3,10 @@ import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { IndexNotFoundExceptionFilter } from './filters/index-not-found-exception.filter';
 import { ClassSerializerInterceptor, HttpStatus, ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(
     // Don't change the exception order
@@ -49,6 +50,8 @@ async function bootstrap() {
       validationError: { target: true, value: true },
     }),
   );
+
+  app.setGlobalPrefix('api');
 
   await app.listen(3000);
 }

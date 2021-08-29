@@ -5,10 +5,18 @@ import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { User } from '../users/entities/user.entity';
+import { SendResetPasswordEmailDto } from './dto/password/send-reset-password-email.dto';
+import { PasswordResetService } from '../password-reset/password-reset.service';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UsersService, private jwtService: JwtService) {}
+  constructor(
+    private userService: UsersService,
+    private jwtService: JwtService,
+    private passwordResets: PasswordResetService,
+    private mailService: MailService,
+  ) {}
 
   async register(newUser: RegisterDto) {
     const hashedPassword = await bcrypt.hash(newUser.password, 10);
@@ -36,5 +44,16 @@ export class AuthService {
     return {
       accessToken: this.jwtService.sign(payload),
     };
+  }
+
+  async sendResetLinkEmail({ email }: SendResetPasswordEmailDto) {
+    const resetToken = await this.passwordResets.create(email);
+
+    await this.mailService.send({
+      to: email,
+      subject: 'Test from NestJS',
+      template: __dirname + `/templates/reset-password.template.hbs`,
+      context: { resetToken: resetToken },
+    });
   }
 }

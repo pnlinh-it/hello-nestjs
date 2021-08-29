@@ -1,4 +1,4 @@
-export interface DatabaseConfig {
+export interface Database {
   host: string;
   port: number;
   username: string;
