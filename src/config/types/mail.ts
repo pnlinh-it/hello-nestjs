@@ -1,9 +1,3 @@
-// export enum MailDriver {
-//   MailTrap = 'mailtrap',
-//   MailGun = 'mailgun',
-//   SendGrid = 'sendgrid',
-// }
-
 import { MailService } from './mail-service';
 
 export type MailDriver = 'mailtrap' | 'mailgun' | 'sendgrid';
