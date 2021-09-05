@@ -30,7 +30,7 @@ export class UsersService {
   }
 
   show(id: number) {
-    return this.users.findOne(id);
+    return this.users.findOneOrFail(id);
   }
 
   async store(createUserDto: CreateUserDto) {

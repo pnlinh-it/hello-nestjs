@@ -5,47 +5,94 @@ import { LoginDto } from './dto/login.dto';
 import { Auth } from '../../decorators/guards/auth.decorator';
 import { User } from '../../decorators/auth/user.decorator';
 import { User as UserEntity } from '../../modules/users/entities/user.entity';
-import { StrategyEnum } from './strateties/strategy.enum';
+import { StrategyEnum as Strategy } from './strateties/strategy.enum';
 import { SendResetPasswordEmailDto } from './dto/password/send-reset-password-email.dto';
+import {
+  ApiNotFoundResponse,
+  ApiTags,
+  ApiTooManyRequestsResponse,
+  ApiUnauthorizedResponse,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
+import { RegisterResponseDto } from './dto/response/register-response.dto';
+import { OauthLoginDto } from './dto/oauth-login.dto';
+import { UserResponseDto } from './dto/response/user-response.dto';
+import { plainToClassWhitelist } from '../../helper/plain-to-class-whitelist';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @HttpCode(HttpStatus.CREATED)
+  /** Register new user */
   @Post('register')
-  register(@Body() newUser: RegisterDto) {
-    return this.authService.register(newUser);
+  @ApiUnprocessableEntityResponse()
+  async register(@Body() newUser: RegisterDto) {
+    const [user, token] = await this.authService.register(newUser);
+
+    const userResponse = plainToClassWhitelist(UserResponseDto, user);
+
+    return new RegisterResponseDto(userResponse, token);
   }
 
+  /** Login new user */
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  login(@Body() credential: LoginDto) {
-    return this.authService.login(credential);
+  @ApiUnauthorizedResponse()
+  async login(@Body() credential: LoginDto) {
+    const [user, token] = await this.authService.login(credential);
+
+    const userResponse = plainToClassWhitelist(UserResponseDto, user);
+
+    return new RegisterResponseDto(userResponse, token);
   }
 
   @Post('login-passport')
   @HttpCode(HttpStatus.OK)
-  @Auth(StrategyEnum.Local)
+  @Auth(Strategy.Local)
+  @ApiUnauthorizedResponse()
+  @ApiUnprocessableEntityResponse()
   // loginPassport(@Req() request: AuthenticatedRequest) {
-  loginPassport(@User() user: UserEntity) {
-    return this.authService.generateToken(user);
+  loginPassport(@Body() credential: LoginDto, @User() user: UserEntity) {
+    const token = this.authService.generateToken(user);
+
+    const userResponse = plainToClassWhitelist(UserResponseDto, user);
+
+    return new RegisterResponseDto(userResponse, token);
   }
 
   @Post('oauth/facebook')
-  @Auth(StrategyEnum.FacebookToken)
-  loginFacebook(@User() user: UserEntity) {
-    return user;
+  @HttpCode(HttpStatus.OK)
+  @Auth(Strategy.FacebookToken)
+  @ApiUnauthorizedResponse()
+  @ApiUnprocessableEntityResponse()
+  loginFacebook(@Body() oauthLoginDto: OauthLoginDto, @User() user: UserEntity) {
+    const token = this.authService.generateToken(user);
+
+    const userResponse = plainToClassWhitelist(UserResponseDto, user);
+
+    return new RegisterResponseDto(userResponse, token);
   }
 
   @Post('oauth/google')
-  @Auth(StrategyEnum.GoogleToken)
-  loginGoogle(@User() user: UserEntity) {
-    return user;
+  @HttpCode(HttpStatus.OK)
+  @Auth(Strategy.GoogleToken)
+  @ApiUnauthorizedResponse()
+  @ApiUnprocessableEntityResponse()
+  loginGoogle(@Body() oauthLoginDto: OauthLoginDto, @User() user: UserEntity) {
+    const token = this.authService.generateToken(user);
+
+    const userResponse = plainToClassWhitelist(UserResponseDto, user);
+
+    return new RegisterResponseDto(userResponse, token);
   }
 
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('password/email')
-  sendResetLinkEmail(@Body() sendResetPasswordEmail: SendResetPasswordEmailDto) {
-    return this.authService.sendResetLinkEmail(sendResetPasswordEmail);
+  @ApiNotFoundResponse()
+  @ApiUnprocessableEntityResponse()
+  @ApiTooManyRequestsResponse()
+  async sendResetLinkEmail(@Body() sendResetPasswordEmail: SendResetPasswordEmailDto) {
+    await this.authService.sendResetLinkEmail(sendResetPasswordEmail);
   }
 }

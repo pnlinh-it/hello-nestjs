@@ -1,6 +1,7 @@
 import { MailService } from './mail-service';
 
 export type MailDriver = 'mailtrap' | 'mailgun' | 'sendgrid';
+
 export class Mail {
   driver: MailDriver;
   port: number;

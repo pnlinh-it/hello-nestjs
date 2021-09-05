@@ -4,6 +4,7 @@ import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { IndexNotFoundExceptionFilter } from './filters/index-not-found-exception.filter';
 import { ClassSerializerInterceptor, HttpStatus, ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { setupSwagger } from './setup-swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -52,6 +53,8 @@ async function bootstrap() {
   );
 
   app.setGlobalPrefix('api');
+
+  setupSwagger(app);
 
   await app.listen(3000);
 }

@@ -1,10 +1,11 @@
 import { applyDecorators } from '@nestjs/common';
-import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsString, MaxLength, MinLength } from 'class-validator';
+import { IsRequired } from './IsRequired';
 
 export function IsRequiredString(range?: { minLength?: number; maxLength?: number }) {
   return applyDecorators(
+    IsRequired(),
     IsString(),
-    IsNotEmpty(),
     MinLength(range?.minLength || 5),
     MaxLength(range?.maxLength || 255),
   );

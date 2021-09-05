@@ -1,8 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
+import { DECORATOR_ROLE_KEY, IS_PUBLIC_KEY } from '../constant/constant';
+import { User } from '../modules/users/entities/user.entity';
 import { Role } from '../modules/users/role';
-import { DECORATOR_ROLE_KEY } from '../constant/constant';
 
 type ActiveResult = boolean | Promise<boolean> | Observable<boolean>;
 
@@ -17,13 +18,21 @@ export class CheckUserGuard implements CanActivate {
     //const roles = this.reflector.get<string[]>('roles', context.getHandler());
     // To combine use getAllAndOverride or getAllAndMerge
     // https://docs.nestjs.com/fundamentals/execution-context#reflection-and-metadata
-    const roles = this.reflector.get<string[]>('roles', context.getClass());
-    const roleEnums = this.reflector.get<Role[]>(DECORATOR_ROLE_KEY, context.getClass());
-    if (!roles) {
+
+    const isPublic = this.getOverrideMethodFirst(context, IS_PUBLIC_KEY);
+    if (isPublic) {
       return true;
     }
-    const request = context.switchToHttp().getRequest();
-    const user = request.user;
-    return true;
+
+    const requiredRoles: Role[] = this.getOverrideMethodFirst(context, DECORATOR_ROLE_KEY);
+
+    const user: User = context.switchToHttp().getRequest().user;
+    const userRoleNames = user.roles.map((role) => role.name);
+
+    return requiredRoles.some((role) => userRoleNames.includes(role));
+  }
+
+  private getOverrideMethodFirst<T>(context: ExecutionContext, key: string): T {
+    return this.reflector.getAllAndOverride(key, [context.getHandler(), context.getClass()]);
   }
 }

@@ -1,9 +1,6 @@
-import { IsRequired } from '../../../decorators/validation/IsRequired';
-import { IsString, MinLength } from 'class-validator';
+import { IsRequiredString } from '../../../decorators/validation/is-required-string';
 
 export class OauthLoginDto {
-  @MinLength(10)
-  @IsString()
-  @IsRequired()
+  @IsRequiredString()
   token: string;
 }

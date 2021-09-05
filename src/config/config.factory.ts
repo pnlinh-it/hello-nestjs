@@ -50,6 +50,12 @@ const config: () => AppConfig = () => {
         },
       },
     },
+    documentation: {
+      auth: {
+        username: process.env.DOCS_AUTH_USERNAME,
+        password: process.env.DOCS_AUTH_PASSWORD,
+      },
+    },
   };
 };
 

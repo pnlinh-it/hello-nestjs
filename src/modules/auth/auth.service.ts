@@ -8,6 +8,8 @@ import { User } from '../users/entities/user.entity';
 import { SendResetPasswordEmailDto } from './dto/password/send-reset-password-email.dto';
 import { PasswordResetService } from '../password-reset/password-reset.service';
 import { MailService } from '../mail/mail.service';
+import { TokenPayload } from './token-payload';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class AuthService {
@@ -18,15 +20,17 @@ export class AuthService {
     private mailService: MailService,
   ) {}
 
-  async register(newUser: RegisterDto) {
+  async register(newUser: RegisterDto): Promise<[User, string]> {
     const hashedPassword = await bcrypt.hash(newUser.password, 10);
 
     const user = await this.userService.store({ ...newUser, password: hashedPassword });
 
-    return this.generateToken(user);
+    const token = this.generateToken(user);
+
+    return [plainToClass(User, user), token];
   }
 
-  async login(credential: LoginDto) {
+  async login(credential: LoginDto): Promise<[User, string]> {
     const { email, password } = credential;
 
     const user = await this.userService.findByEmailPassword(email, password);
@@ -35,15 +39,15 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    return this.generateToken(user);
+    const token = this.generateToken(user);
+
+    return [plainToClass(User, user), token];
   }
 
   generateToken(user: User) {
-    const payload = { userId: user.id };
+    const payload: TokenPayload = { userId: user.id };
 
-    return {
-      accessToken: this.jwtService.sign(payload),
-    };
+    return this.jwtService.sign(payload);
   }
 
   async sendResetLinkEmail({ email }: SendResetPasswordEmailDto) {

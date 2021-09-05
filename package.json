@@ -31,6 +31,7 @@
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/serve-static": "^2.2.2",
+    "@nestjs/swagger": "^5.0.9",
     "@nestjs/typeorm": "^8.0.2",
     "@types/bcrypt": "^5.0.0",
     "@types/passport-google-oauth2": "^0.1.4",
@@ -39,6 +40,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "date-fns": "^2.23.0",
+    "express-basic-auth": "^1.2.0",
     "handlebars": "^4.7.7",
     "js-yaml": "^3.14.1",
     "mysql2": "^2.3.0",
@@ -52,6 +54,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "slugify": "^1.6.0",
+    "swagger-ui-express": "^4.1.6",
     "typeorm": "^0.2.37"
   },
   "devDependencies": {

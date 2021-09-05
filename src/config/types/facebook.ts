@@ -1,4 +1,4 @@
-export interface Facebook {
+export class Facebook {
   clientId: string;
   clientSecret: string;
 }

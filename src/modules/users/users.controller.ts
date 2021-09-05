@@ -6,51 +6,63 @@ import {
   Header,
   HttpCode,
   HttpStatus,
-  Param,
-  ParseIntPipe,
   Post,
   Put,
   Query,
   Redirect,
   Req,
   Res,
-  SetMetadata,
   UseGuards,
-  UsePipes,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Request, Response } from 'express';
 import { CheckUserGuard } from '../../guards/check-user.guard';
-import { UniqueEmailPipe } from '../../pipes/unique-email.pipe';
-import { Role } from './role';
-import { Roles } from '../../decorators/guards/role.decorator';
 import { Auth } from '../../decorators/guards/auth.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AssignRolesDto } from './dto/assign-roles.dto';
 import { StrategyEnum } from '../auth/strateties/strategy.enum';
+import { Roles } from '../../decorators/guards/role.decorator';
+import { Role } from './role';
+import { IsPublic } from '../../decorators/guards/is-public.decorator';
+import { UserResponseDto } from '../auth/dto/response/user-response.dto';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiForbiddenResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
+import { IntParam } from '../../decorators/http/int-param.decorator';
+import { plainToClassWhitelist } from '../../helper/plain-to-class-whitelist';
 
+@Roles(Role.Admin)
 @UseGuards(CheckUserGuard)
-@SetMetadata('roles', ['staff'])
+@Auth(StrategyEnum.JWT)
+@ApiTags('users')
+@ApiBearerAuth()
+@ApiForbiddenResponse()
+@ApiUnauthorizedResponse()
 @Controller('users')
-@Roles(Role.Admin, Role.User)
 export class UsersController {
   constructor(private userService: UsersService) {}
 
-  @UseGuards(CheckUserGuard)
-  @SetMetadata('roles', ['admin'])
+  @IsPublic()
   @Get()
-  index() {
-    return this.userService.index();
+  async index() {
+    const users = await this.userService.index();
+
+    return users.map((user) => plainToClassWhitelist(UserResponseDto, user));
   }
 
-  /** When we use Express object by using decorator @Req, @Res
+  /**
+   * When we use Express object by using decorator @Req, @Res
    * We have responsibility to handle response by using that object
    * Or we use option: passthrough: true
    */
   @Get('manual')
   indexManualHandle(@Req() request: Request, @Res() response: Response) {
-    console.log(request.query);
     response.send(this.userService.index());
   }
 
@@ -68,9 +80,12 @@ export class UsersController {
     }
   }
 
+  @Roles(Role.Admin, Role.User)
   @Get(':id')
-  show(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.show(id);
+  async show(@IntParam('id') id: number) {
+    const user = await this.userService.show(id);
+
+    return plainToClassWhitelist(UserResponseDto, user);
   }
 
   /**
@@ -81,25 +96,34 @@ export class UsersController {
   @Post()
   @Header('Cache-Control', 'true')
   @HttpCode(HttpStatus.CREATED)
-  @UsePipes(UniqueEmailPipe)
-  store(@Body() createUserDto: CreateUserDto) {
-    return this.userService.store(createUserDto);
+  // @UsePipes(UniqueEmailPipe)
+  @ApiUnprocessableEntityResponse()
+  async store(@Body() createUserDto: CreateUserDto) {
+    const user = await this.userService.store(createUserDto);
+    return plainToClassWhitelist(UserResponseDto, user);
   }
 
   @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() patch: UpdateUserDto) {
+  @ApiBadRequestResponse()
+  @ApiUnprocessableEntityResponse()
+  update(@IntParam('id') id: number, @Body() patch: UpdateUserDto) {
     return this.userService.update(id, patch);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  destroy(@Param('id', ParseIntPipe) id) {
+  @ApiBadRequestResponse()
+  destroy(@IntParam('id') id: number) {
     return this.userService.destroy(id);
   }
 
   @Post(':userId/roles')
-  addRoles(@Param('userId', ParseIntPipe) userId: number, @Body() assignRolesDto: AssignRolesDto) {
-    return this.userService.assignRoles(userId, assignRolesDto);
+  @HttpCode(HttpStatus.OK)
+  @ApiBadRequestResponse()
+  @ApiUnprocessableEntityResponse()
+  async addRoles(@IntParam('userId') userId: number, @Body() assignRolesDto: AssignRolesDto) {
+    const user = await this.userService.assignRoles(userId, assignRolesDto);
+    return plainToClassWhitelist(UserResponseDto, user);
   }
 
   // // @UseGuards(CheckUserGuard)
@@ -113,10 +137,4 @@ export class UsersController {
   //     access_token: this.jwtService.sign(payload),
   //   };
   // }
-
-  @Auth(StrategyEnum.JWT)
-  @Post('profile')
-  profile(@Req() req) {
-    return req.user;
-  }
 }

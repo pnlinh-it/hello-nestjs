@@ -1,47 +1,23 @@
-import { IsRequired } from '../../../decorators/validation/IsRequired';
-import {
-  IsEmail,
-  IsInt,
-  IsOptional,
-  IsString,
-  Max,
-  MaxLength,
-  Min,
-  MinLength,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsEmail } from 'class-validator';
 import { Confirmed } from '../../../decorators/validation/Confirmed';
+import { IsRequiredString } from '../../../decorators/validation/is-required-string';
+import { IsOptionalInt } from '../../../decorators/validation/is-optional-int';
 
 export class RegisterDto {
-  @MaxLength(100)
   @IsEmail()
-  @IsString()
-  @IsRequired()
+  @IsRequiredString()
   email: string;
 
-  @MaxLength(100)
-  @MinLength(5)
-  @IsString()
-  @IsRequired()
+  @IsRequiredString({ minLength: 3 })
   name: string;
 
-  @Type(() => Number)
-  @Max(200)
-  @Min(1)
-  @IsInt()
-  @IsOptional()
-  age: number;
+  @IsOptionalInt()
+  age?: number;
 
-  @MaxLength(50)
-  @MinLength(8)
-  @IsString()
-  @IsRequired()
+  @IsRequiredString({ minLength: 8 })
   password: string;
 
-  @MaxLength(50)
-  @MinLength(8)
   @Confirmed('password')
-  @IsString()
-  @IsRequired()
+  @IsRequiredString({ minLength: 8 })
   passwordConfirm: string;
 }

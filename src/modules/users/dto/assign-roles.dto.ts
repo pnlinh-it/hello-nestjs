@@ -1,4 +1,3 @@
-import { ArrayNotEmpty, IsArray } from 'class-validator';
 import { IsRequireArray } from 'src/decorators/validation/is-required-array';
 import { IsRequiredInt } from 'src/decorators/validation/is-required-int';
 

@@ -4,6 +4,7 @@ import { String } from '../../../decorators/typeorm/string';
 import { UserRole } from './user-role.entity';
 import { SocialUser } from './social-user.entity';
 import { Expose } from 'class-transformer';
+import { Role } from '../../role/entities/role.entity';
 
 @Entity('users')
 export class User {
@@ -25,7 +26,7 @@ export class User {
 
   @Column({ name: 'age', type: 'mediumint', unsigned: true, nullable: true })
   @Expose()
-  age: number;
+  age?: number;
 
   @String('password')
   password: string;
@@ -44,7 +45,7 @@ export class User {
   @OneToMany(() => SocialUser, (socialUser) => socialUser.user)
   socialUsers: SocialUser[];
 
-  public get roles() {
+  public get roles(): Role[] {
     return this.userRoles?.map((userRole) => userRole.role) || [];
   }
 

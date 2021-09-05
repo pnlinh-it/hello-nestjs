@@ -1,4 +1,4 @@
-export interface Google {
+export class Google {
   clientId: string;
   clientSecret: string;
 }

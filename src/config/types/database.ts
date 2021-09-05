@@ -1,4 +1,4 @@
-export interface Database {
+export class Database {
   host: string;
   port: number;
   username: string;
