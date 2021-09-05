@@ -1,10 +1,9 @@
-import { Type } from 'class-transformer';
-import { ArrayNotEmpty, IsArray, IsNumber } from 'class-validator';
+import { ArrayNotEmpty, IsArray } from 'class-validator';
+import { IsRequireArray } from 'src/decorators/validation/is-required-array';
+import { IsRequiredInt } from 'src/decorators/validation/is-required-int';
 
 export class AssignRolesDto {
-  @Type(() => Number)
-  @IsNumber({ allowNaN: false }, { each: true })
-  @IsArray()
-  @ArrayNotEmpty()
+  @IsRequiredInt({ min: 1, each: true })
+  @IsRequireArray({ minSize: 3, maxSize: 4 })
   roleIds: number[];
 }
