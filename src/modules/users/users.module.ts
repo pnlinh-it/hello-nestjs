@@ -1,13 +1,15 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
 import { PassportModule } from '@nestjs/passport';
-import { LoggerMiddleware } from '../../middlewares/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LoggerMiddleware } from '../../middlewares/logger.middleware';
+import { RoleRepository } from '../role/role-repository';
+import { RolesLoader } from './roles.loader';
+import { SocialUserRepository } from './social-user-repository';
 import { UserRepository } from './user-repository';
 import { UserRoleRepository } from './user-role-repository';
-import { RoleRepository } from '../role/role-repository';
-import { SocialUserRepository } from './social-user-repository';
+import { UserResolver } from './user.resolver';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
 
 /**
  * To use UserService in other module
@@ -25,7 +27,7 @@ import { SocialUserRepository } from './social-user-repository';
     PassportModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, UserResolver, RolesLoader],
   exports: [UsersService],
 })
 export class UsersModule implements NestModule {

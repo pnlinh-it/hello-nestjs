@@ -25,7 +25,7 @@ import { StrategyEnum } from '../auth/strateties/strategy.enum';
 import { Roles } from '../../decorators/guards/role.decorator';
 import { Role } from './role';
 import { IsPublic } from '../../decorators/guards/is-public.decorator';
-import { UserResponseDto } from '../auth/dto/response/user-response.dto';
+import { UserResponseDto } from './dto/reponse/user-response.dto';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,

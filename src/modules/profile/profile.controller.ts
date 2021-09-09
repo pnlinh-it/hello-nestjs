@@ -4,7 +4,7 @@ import { User } from '../../decorators/auth/user.decorator';
 import { Auth } from '../../decorators/guards/auth.decorator';
 import { StrategyEnum } from '../auth/strateties/strategy.enum';
 import { ApiBearerAuth, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { UserResponseDto } from '../auth/dto/response/user-response.dto';
+import { UserResponseDto } from '../users/dto/reponse/user-response.dto';
 import { plainToClassWhitelist } from '../../helper/plain-to-class-whitelist';
 
 @Controller('profile')

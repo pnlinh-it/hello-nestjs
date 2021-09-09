@@ -16,7 +16,7 @@ import {
 } from '@nestjs/swagger';
 import { RegisterResponseDto } from './dto/response/register-response.dto';
 import { OauthLoginDto } from './dto/oauth-login.dto';
-import { UserResponseDto } from './dto/response/user-response.dto';
+import { UserResponseDto } from '../users/dto/reponse/user-response.dto';
 import { plainToClassWhitelist } from '../../helper/plain-to-class-whitelist';
 
 @Controller('auth')

@@ -1,8 +1,10 @@
+import { InputType } from '@nestjs/graphql';
 import { IsEmail } from 'class-validator';
 import { Confirmed } from '../../../decorators/validation/Confirmed';
-import { IsRequiredString } from '../../../decorators/validation/is-required-string';
 import { IsOptionalInt } from '../../../decorators/validation/is-optional-int';
+import { IsRequiredString } from '../../../decorators/validation/is-required-string';
 
+@InputType()
 export class RegisterDto {
   @IsEmail()
   @IsRequiredString()

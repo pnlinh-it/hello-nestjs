@@ -14,7 +14,7 @@ export class User {
 
   @Column({ name: 'email', type: 'varchar', length: 255, unique: true, nullable: true })
   @Expose()
-  email: string;
+  email?: string;
 
   @Column({ name: 'username', type: 'varchar', length: 255, unique: true })
   @Expose()

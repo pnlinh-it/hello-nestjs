@@ -6,14 +6,18 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { InternalOAuthError } from 'passport-oauth';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { IndexNotFoundException } from '../exceptions/index-not-found.exception';
+import { InternalOAuthError } from 'passport-oauth';
 import { EntityNotFoundError } from 'typeorm';
+import { IndexNotFoundException } from '../exceptions/index-not-found.exception';
 
 @Catch()
 export class AllExceptionsFilter extends BaseExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
+    if (host.getType() !== 'http') {
+      throw exception;
+    }
+
     if (exception instanceof IndexNotFoundException) {
       return AllExceptionsFilter.handleIndexNotFound(exception, host);
     }

@@ -26,6 +26,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MailModule } from './modules/mail/mail.module';
 import { Database } from './config/types/database';
+import { MyGraphQLModule } from './modules/graphql/my-graphql.module';
 //import configurationYml from './config/configuration-yml';
 
 const option = { password: 'awdawd' };
@@ -116,6 +117,7 @@ const connectionFactory = {
       exclude: ['/api*', '/client*'],
     }),
     MailModule,
+    MyGraphQLModule,
   ],
   controllers: [AppController],
   providers: [AppService, aliasM1ServiceFactory, connectionFactory, LogService],

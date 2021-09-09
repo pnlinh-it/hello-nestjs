@@ -2,11 +2,17 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "assets": [
-      "**/*.{hbs,css}"
-    ],
+    "assets": ["**/*.{hbs,css}"],
     "plugins": [
-      "@nestjs/swagger"
+      {
+        "name": "@nestjs/swagger"
+      },
+      {
+        "name": "@nestjs/graphql",
+        "options": {
+          "typeFileNameSuffix": [".dto.ts", ".input.ts", ".args.ts"]
+        }
+      }
     ]
   }
 }

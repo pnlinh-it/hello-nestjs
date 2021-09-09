@@ -12,6 +12,7 @@ import { FacebookStrategy } from './strateties/facebook.strategy';
 import { GoogleTokenStrategy } from './strateties/google-token.strategy';
 import { PasswordResetModule } from '../password-reset/password-reset.module';
 import { MailModule } from '../mail/mail.module';
+import { UserResolver } from '../users/user.resolver';
 
 type ConfigServiceEnv = ConfigService<AppConfig>;
 
