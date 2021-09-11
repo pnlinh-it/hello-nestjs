@@ -1,4 +1,4 @@
-import { Field, HideField, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Expose, Type } from 'class-transformer';
 import { RoleResponseDto } from '../../../role/dto/response/role-response.dto';
 
@@ -20,7 +20,7 @@ export class UserResponseDto {
   @Expose()
   age?: number;
 
-  @HideField()
+  @Field(() => [RoleResponseDto], { nullable: 'itemsAndList' })
   @Expose()
   @Type(() => RoleResponseDto)
   roles: RoleResponseDto[];

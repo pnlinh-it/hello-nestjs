@@ -1,5 +1,5 @@
-import { IsRequireArray } from 'src/decorators/validation/is-required-array';
-import { IsRequiredInt } from 'src/decorators/validation/is-required-int';
+import { IsRequireArray } from '../../../decorators/validation/is-required-array';
+import { IsRequiredInt } from '../../../decorators/validation/is-required-int';
 
 export class AssignRolesDto {
   @IsRequiredInt({ min: 1, each: true })

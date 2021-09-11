@@ -1,9 +1,9 @@
+import { ClassSerializerInterceptor, HttpStatus, ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { IndexNotFoundExceptionFilter } from './filters/index-not-found-exception.filter';
-import { ClassSerializerInterceptor, HttpStatus, ValidationPipe } from '@nestjs/common';
-import { NestExpressApplication } from '@nestjs/platform-express';
 import { setupSwagger } from './setup-swagger';
 
 async function bootstrap() {

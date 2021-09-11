@@ -1,20 +1,20 @@
 import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserRepository } from './user-repository';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Like, Not } from 'typeorm';
 import { AssignRolesDto } from './dto/assign-roles.dto';
 import { RoleRepository } from '../role/role-repository';
-import { UserRoleRepository } from './user-role-repository';
 import { UserRole } from './entities/user-role.entity';
 import * as bcrypt from 'bcrypt';
 import { OauthUser } from '../auth/oauth/oauth-user';
-import { SocialUserRepository } from './social-user-repository';
+import { SocialUserRepository } from './repositories/social-user-repository';
 import { SocialUser } from './entities/social-user.entity';
 import slugify from 'slugify';
 import * as crypto from 'crypto';
 import { plainToClass } from 'class-transformer';
 import { User } from './entities/user.entity';
+import { UserRepository } from './repositories/user-repository';
+import { UserRoleRepository } from './repositories/user-role-repository';
 
 @Injectable()
 export class UsersService {

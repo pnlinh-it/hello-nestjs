@@ -9,26 +9,41 @@ type RoleResponseDto {
 
 type UserResponseDto {
   id: ID!
+  roles: [RoleResponseDto]
   email: String
   username: String!
   name: String!
   age: Float
-  roles: [RoleResponseDto!]!
+}
+
+type RegisterResponseDto {
+  user: UserResponseDto!
+  accessToken: String!
 }
 
 type Query {
   users(page: Int!, size: Int = 20): [UserResponseDto!]!
   user(id: Int!): UserResponseDto
+  login(email: String!, password: String!): RegisterResponseDto!
 }
 
 type Mutation {
   createUser(createUser: CreateUserDto!): UserResponseDto!
+  register(registerDto: RegisterDto!): RegisterResponseDto!
 }
 
 input CreateUserDto {
   email: String!
+  age: Int
   name: String!
-  age: Float
+  password: String!
+  passwordConfirm: String!
+}
+
+input RegisterDto {
+  email: String!
+  age: Int
+  name: String!
   password: String!
   passwordConfirm: String!
 }

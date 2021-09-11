@@ -1,6 +1,8 @@
-import { IsRequired } from '../../../decorators/validation/IsRequired';
+import { IsRequired } from '../../../../decorators/validation/IsRequired';
 import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
+import { ArgsType } from '@nestjs/graphql';
 
+@ArgsType()
 export class LoginDto {
   @MaxLength(100)
   @IsEmail()

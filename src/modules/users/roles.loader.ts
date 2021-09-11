@@ -2,7 +2,7 @@ import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
 import * as _ from 'lodash';
 import { In } from 'typeorm';
-import { UserRoleRepository } from './user-role-repository';
+import { UserRoleRepository } from './repositories/user-role-repository';
 
 @Injectable({ scope: Scope.REQUEST })
 export class RolesLoader {

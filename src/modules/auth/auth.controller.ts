@@ -1,12 +1,11 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
+import { LoginDto } from './dto/request/login.dto';
 import { Auth } from '../../decorators/guards/auth.decorator';
 import { User } from '../../decorators/auth/user.decorator';
 import { User as UserEntity } from '../../modules/users/entities/user.entity';
 import { StrategyEnum as Strategy } from './strateties/strategy.enum';
-import { SendResetPasswordEmailDto } from './dto/password/send-reset-password-email.dto';
+import { SendResetPasswordEmailDto } from './dto/request/send-reset-password-email.dto';
 import {
   ApiNotFoundResponse,
   ApiTags,
@@ -15,9 +14,10 @@ import {
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { RegisterResponseDto } from './dto/response/register-response.dto';
-import { OauthLoginDto } from './dto/oauth-login.dto';
+import { OauthLoginDto } from './dto/request/oauth-login.dto';
 import { UserResponseDto } from '../users/dto/reponse/user-response.dto';
 import { plainToClassWhitelist } from '../../helper/plain-to-class-whitelist';
+import { RegisterDto } from './dto/request/register.dto';
 
 @Controller('auth')
 @ApiTags('auth')

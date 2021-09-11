@@ -1,15 +1,15 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
-import { LoginDto } from './dto/login.dto';
-import { User } from '../users/entities/user.entity';
-import { SendResetPasswordEmailDto } from './dto/password/send-reset-password-email.dto';
-import { PasswordResetService } from '../password-reset/password-reset.service';
-import { MailService } from '../mail/mail.service';
-import { TokenPayload } from './token-payload';
 import { plainToClass } from 'class-transformer';
+import { MailService } from '../mail/mail.service';
+import { PasswordResetService } from '../password-reset/password-reset.service';
+import { User } from '../users/entities/user.entity';
+import { UsersService } from '../users/users.service';
+import { SendResetPasswordEmailDto } from './dto/request/send-reset-password-email.dto';
+import { LoginDto } from './dto/request/login.dto';
+import { RegisterDto } from './dto/request/register.dto';
+import { TokenPayload } from './token-payload';
 
 @Injectable()
 export class AuthService {

@@ -1,6 +1,8 @@
+import { ObjectType } from '@nestjs/graphql';
 import { Expose } from 'class-transformer';
 import { UserResponseDto } from '../../../users/dto/reponse/user-response.dto';
 
+@ObjectType()
 export class RegisterResponseDto {
   @Expose()
   user: UserResponseDto;

@@ -13,6 +13,7 @@ import { GoogleTokenStrategy } from './strateties/google-token.strategy';
 import { PasswordResetModule } from '../password-reset/password-reset.module';
 import { MailModule } from '../mail/mail.module';
 import { UserResolver } from '../users/user.resolver';
+import { AuthResolver } from './auth.resolver';
 
 type ConfigServiceEnv = ConfigService<AppConfig>;
 
@@ -36,6 +37,7 @@ type ConfigServiceEnv = ConfigService<AppConfig>;
     FacebookStrategy,
     GoogleTokenStrategy,
     AuthService,
+    AuthResolver
   ],
   controllers: [AuthController],
   exports: [CaslAbilityFactory],

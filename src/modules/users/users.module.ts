@@ -4,12 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerMiddleware } from '../../middlewares/logger.middleware';
 import { RoleRepository } from '../role/role-repository';
 import { RolesLoader } from './roles.loader';
-import { SocialUserRepository } from './social-user-repository';
-import { UserRepository } from './user-repository';
-import { UserRoleRepository } from './user-role-repository';
+import { SocialUserRepository } from './repositories/social-user-repository';
 import { UserResolver } from './user.resolver';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { UserRepository } from './repositories/user-repository';
+import { UserRoleRepository } from './repositories/user-role-repository';
 
 /**
  * To use UserService in other module
