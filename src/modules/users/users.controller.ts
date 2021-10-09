@@ -14,18 +14,6 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { Request, Response } from 'express';
-import { CheckUserGuard } from '../../guards/check-user.guard';
-import { Auth } from '../../decorators/guards/auth.decorator';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { AssignRolesDto } from './dto/assign-roles.dto';
-import { StrategyEnum } from '../auth/strateties/strategy.enum';
-import { Roles } from '../../decorators/guards/role.decorator';
-import { Role } from './role';
-import { IsPublic } from '../../decorators/guards/is-public.decorator';
-import { UserResponseDto } from './dto/reponse/user-response.dto';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -34,8 +22,22 @@ import {
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
+import { Request, Response } from 'express';
+import { PageOptionDto } from '../../common/dtos/paging-meta.dto';
+import { Auth } from '../../decorators/guards/auth.decorator';
+import { IsPublic } from '../../decorators/guards/is-public.decorator';
+import { Roles } from '../../decorators/guards/role.decorator';
 import { IntParam } from '../../decorators/http/int-param.decorator';
+import { CheckUserGuard } from '../../guards/check-user.guard';
 import { plainToClassWhitelist } from '../../helper/plain-to-class-whitelist';
+import { StrategyEnum } from '../auth/strateties/strategy.enum';
+import { AssignRolesDto } from './dto/assign-roles.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UserResponseDto } from './dto/reponse/user-response.dto';
+import { UsersReponseDto } from './dto/reponse/users-reponse.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { Role } from './role';
+import { UsersService } from './users.service';
 
 @Roles(Role.Admin)
 @UseGuards(CheckUserGuard)
@@ -50,10 +52,12 @@ export class UsersController {
 
   @IsPublic()
   @Get()
-  async index() {
-    const users = await this.userService.index();
+  async index(@Query() pageOption: PageOptionDto) {
+    const users = await this.userService.filter(pageOption);
 
-    return users.map((user) => plainToClassWhitelist(UserResponseDto, user));
+    const userReponses = users.map((user) => plainToClassWhitelist(UserResponseDto, user));
+
+    return new UsersReponseDto(userReponses, pageOption);
   }
 
   /**

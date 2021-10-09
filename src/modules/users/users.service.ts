@@ -1,18 +1,19 @@
 import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import { plainToClass } from 'class-transformer';
+import * as crypto from 'crypto';
+import slugify from 'slugify';
+import { Like, Not } from 'typeorm';
+import { PageOptionDto } from '../../common/dtos/paging-meta.dto';
+import { OauthUser } from '../auth/oauth/oauth-user';
+import { RoleRepository } from '../role/role-repository';
+import { AssignRolesDto } from './dto/assign-roles.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Like, Not } from 'typeorm';
-import { AssignRolesDto } from './dto/assign-roles.dto';
-import { RoleRepository } from '../role/role-repository';
-import { UserRole } from './entities/user-role.entity';
-import * as bcrypt from 'bcrypt';
-import { OauthUser } from '../auth/oauth/oauth-user';
-import { SocialUserRepository } from './repositories/social-user-repository';
 import { SocialUser } from './entities/social-user.entity';
-import slugify from 'slugify';
-import * as crypto from 'crypto';
-import { plainToClass } from 'class-transformer';
+import { UserRole } from './entities/user-role.entity';
 import { User } from './entities/user.entity';
+import { SocialUserRepository } from './repositories/social-user-repository';
 import { UserRepository } from './repositories/user-repository';
 import { UserRoleRepository } from './repositories/user-role-repository';
 
@@ -24,6 +25,14 @@ export class UsersService {
     private userRoles: UserRoleRepository,
     private socialUsers: SocialUserRepository,
   ) {}
+
+  filter(pageOption: PageOptionDto) {
+    return this.users.find({
+      take: pageOption.take,
+      skip: pageOption.skip,
+      order: { createdAt: pageOption.order },
+    });
+  }
 
   index() {
     return this.users.find();
