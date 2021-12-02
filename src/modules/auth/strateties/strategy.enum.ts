@@ -3,4 +3,5 @@ export enum StrategyEnum {
   JWT = 'jwt',
   FacebookToken = 'facebook-token',
   GoogleToken = 'google-token',
+  GoogleRedirect = 'google-redirect',
 }

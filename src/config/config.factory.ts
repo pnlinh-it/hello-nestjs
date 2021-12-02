@@ -21,6 +21,7 @@ const config: () => AppConfig = () => {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackUrl: process.env.GOOGLE_CALLBACK,
     },
     auth: {
       passwordThrottle: parseInt(process.env.PASSWORD_RESET_THROTTLE),

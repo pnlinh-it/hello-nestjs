@@ -13,6 +13,7 @@ import { GoogleTokenStrategy } from './strateties/google-token.strategy';
 import { PasswordResetModule } from '../password-reset/password-reset.module';
 import { MailModule } from '../mail/mail.module';
 import { AuthResolver } from './auth.resolver';
+import { GoogleRedirectStrategy } from './strateties/google-redirect.strategy';
 
 type ConfigServiceEnv = ConfigService<AppConfig>;
 
@@ -35,6 +36,7 @@ type ConfigServiceEnv = ConfigService<AppConfig>;
     JwtStrategy,
     FacebookStrategy,
     GoogleTokenStrategy,
+    GoogleRedirectStrategy,
     AuthService,
     AuthResolver,
   ],

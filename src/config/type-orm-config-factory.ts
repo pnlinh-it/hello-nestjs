@@ -1,18 +1,18 @@
-import { TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService, ConfigType } from '@nestjs/config';
-import databaseNamespaceConfig from './database.namespace.config';
-import { AppConfig } from './app-config';
+import { TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
-import { Question } from '../modules/questions/entities/question';
-import { Answer } from '../modules/questions/entities/answer';
-import { Quiz } from '../modules/quiz/entities/quiz.entity';
-import { QuizQuestion } from '../modules/quiz-question/entities/quiz-question';
-import { User } from '../modules/users/entities/user.entity';
-import { Role } from '../modules/role/entities/role.entity';
-import { UserRole } from '../modules/users/entities/user-role.entity';
-import { SocialUser } from '../modules/users/entities/social-user.entity';
 import { PasswordReset } from '../modules/password-reset/entities/password-reset';
+import { Answer } from '../modules/questions/entities/answer';
+import { Question } from '../modules/questions/entities/question';
+import { QuizQuestion } from '../modules/quiz-question/entities/quiz-question';
+import { Quiz } from '../modules/quiz/entities/quiz.entity';
+import { Role } from '../modules/role/entities/role.entity';
+import { SocialUser } from '../modules/users/entities/social-user.entity';
+import { UserRole } from '../modules/users/entities/user-role.entity';
+import { User } from '../modules/users/entities/user.entity';
+import { AppConfig } from './app-config';
+import databaseNamespaceConfig from './database.namespace.config';
 import { Database } from './types/database';
 
 @Injectable()

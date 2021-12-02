@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
 import { InternalOAuthError } from 'passport-oauth';
+import { InternalOAuthError as InternalOAuthError2, TokenError } from 'passport-oauth2';
 import { EntityNotFoundError } from 'typeorm';
 import { IndexNotFoundException } from '../exceptions/index-not-found.exception';
 
@@ -26,11 +27,11 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
       return super.catch(new NotFoundException(), host);
     }
 
-    if (exception instanceof InternalOAuthError) {
-      return super.catch(new UnprocessableEntityException('Invalid token.'), host);
-    }
-
-    if (exception instanceof InternalOAuthError) {
+    if (
+      exception instanceof InternalOAuthError ||
+      exception instanceof InternalOAuthError2 ||
+      exception instanceof TokenError
+    ) {
       return super.catch(new UnprocessableEntityException('Invalid token.'), host);
     }
 

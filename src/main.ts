@@ -55,7 +55,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   setupSwagger(app);
-
+  app.enableCors();
   await app.listen(3000);
 }
 
