@@ -1,0 +1,40 @@
+name: docker-build-and-publish
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: ghcr.io/pnlinh-it/hello-nestjs
+          tag-latest: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to GitHub container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: pnlinh-it
+          password: ${{ secrets.CR_PAT }}
+
+      - name: Build and push Docker images
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          file: ./Dockerfile
+          context: .
+          tags: ${{ steps.docker_meta.outputs.tags }}
