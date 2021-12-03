@@ -47,3 +47,18 @@ networks:
 ```shell
 docker-compose up
 ```
+
+## Debug
+- Change `Dockerfile.dev`
+```dockerfile
+CMD ["npm", "run", "start:debug_docker"]
+```
+- Start docker-compose
+```shell
+docker-compose -f docker-compose.dev.yml up --build
+```
+- Waiting util container is running then start VS code debug.
+
+![](debug.png)
+
+- In case error module not found, remove `dist`, `node_modules` folder.

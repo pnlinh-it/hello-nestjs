@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: hello_nestjs
+    container_name: hello_nestjs
+    ports:
+      - "80:3000"
+      - "9229:9229"
+    volumes:
+      - ./:/usr/src/app
+      - ./usr/src/app/node_modules
+      - ./usr/src/app/dist
+    networks:
+      - hello_nestjs
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    networks:
+      - hello_nestjs
+
+networks:
+  hello_nestjs:
+    driver: bridge
+    name: hello_nestjs    
