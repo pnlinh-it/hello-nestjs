@@ -17,6 +17,7 @@ export class BullBoardModule implements NestModule {
   constructor(private readonly queuesService: QueuesService) {}
 
   configure(consumer: MiddlewareConsumer) {
+    // https://github.com/felixmosh/bull-board/issues/303
     const serverAdapter = this.queuesService.getServerAdapter();
 
     serverAdapter.setBasePath('/api/admin/queues');
