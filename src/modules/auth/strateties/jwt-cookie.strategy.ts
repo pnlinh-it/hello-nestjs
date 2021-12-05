@@ -19,11 +19,11 @@ export class JwtCookieStrategy extends PassportStrategy(Strategy, StrategyEnum.J
       ]),
       ignoreExpiration: false,
       secretOrKey: configService.get('jwtKey'),
+      passReqToCallback: true,
     });
   }
 
-  async validate(payload: any) {
-    console.log(`payload ${payload}`);
+  async validate(request: Request, payload: any) {
     const isAdmin = await this.userService.hasRole(payload.userId, 'admin');
     if (isAdmin) {
       return await this.userService.findById(payload.userId);
