@@ -27,6 +27,9 @@ import { join } from 'path';
 import { MailModule } from './modules/mail/mail.module';
 import { Database } from './config/types/database';
 import { MyGraphQLModule } from './modules/graphql/my-graphql.module';
+import { BullModule } from '@nestjs/bull';
+import { BullConfigFactory } from './config/bull-config-factory.service';
+import { BullBoardModule } from './modules/bulls/bull-board.module';
 //import configurationYml from './config/configuration-yml';
 
 const option = { password: 'awdawd' };
@@ -104,6 +107,11 @@ const connectionFactory = {
       //   return connection;
       // },
     }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useClass: BullConfigFactory,
+    }),
+    BullBoardModule,
     ExportServiceModule,
     QuestionsModule,
     QuizModule,

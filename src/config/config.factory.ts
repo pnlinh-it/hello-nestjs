@@ -13,6 +13,12 @@ const config: () => AppConfig = () => {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
     },
+    redis: {
+      host: process.env.REDIS_HOST,
+      port: parseInt(process.env.REDIS_PORT),
+      password: process.env.REDIS_PASSWORD,
+      prefix: process.env.REDIS_PREFIX,
+    },
     jwtKey: process.env.JWT_SECRET,
     facebook: {
       clientId: process.env.FACEBOOK_CLIENT_ID,
@@ -22,6 +28,7 @@ const config: () => AppConfig = () => {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackUrl: process.env.GOOGLE_CALLBACK,
+      adminCallbackUrl: process.env.GOOGLE_ADMIN_CALLBACK,
     },
     auth: {
       passwordThrottle: parseInt(process.env.PASSWORD_RESET_THROTTLE),

@@ -8,7 +8,12 @@ import { Injectable } from '@nestjs/common';
 // port: 465 secure: true, // use TLS
 @Injectable()
 export class MailConfigFactory implements MailerOptionsFactory {
+  private static isDevelopment() {
+    return process.env.NODE_ENV === 'development';
+  }
+
   constructor(private configService: ConfigService<AppConfig>) {}
+
   createMailerOptions(): Promise<MailerOptions> | MailerOptions {
     const mailConfig = this.configService.get<Mail>('mail');
 
@@ -22,6 +27,7 @@ export class MailConfigFactory implements MailerOptionsFactory {
           pass: mailService.password,
         },
       },
+      preview: MailConfigFactory.isDevelopment(),
       defaults: {
         from: {
           name: mailConfig.fromName,

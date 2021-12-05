@@ -16,6 +16,9 @@ import { User } from './entities/user.entity';
 import { SocialUserRepository } from './repositories/social-user-repository';
 import { UserRepository } from './repositories/user-repository';
 import { UserRoleRepository } from './repositories/user-role-repository';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { QUEUE_USER } from './constant';
 
 @Injectable()
 export class UsersService {
@@ -24,6 +27,7 @@ export class UsersService {
     private roles: RoleRepository,
     private userRoles: UserRoleRepository,
     private socialUsers: SocialUserRepository,
+    @InjectQueue(QUEUE_USER) private readonly userQueue: Queue,
   ) {}
 
   filter(pageOption: PageOptionDto) {
@@ -174,5 +178,19 @@ export class UsersService {
     return this.users.findOne(user.id, {
       relations: ['userRoles', 'userRoles.role'],
     });
+  }
+
+  async hasRole(userId: number, role: string) {
+    const adminRole = await this.roles.findOneOrFail({
+      select: ['id', 'name'],
+      where: { name: role },
+    });
+
+    const userRole = await this.userRoles.findOneOrFail({
+      select: ['id', 'userId', 'roleId'],
+      where: { userId: userId, roleId: adminRole.id },
+    });
+
+    return !!userRole;
   }
 }

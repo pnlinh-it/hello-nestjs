@@ -14,6 +14,9 @@ import { PasswordResetModule } from '../password-reset/password-reset.module';
 import { MailModule } from '../mail/mail.module';
 import { AuthResolver } from './auth.resolver';
 import { GoogleRedirectStrategy } from './strateties/google-redirect.strategy';
+import { JwtCookieStrategy } from './strateties/jwt-cookie.strategy';
+import { GoogleAdminStrategy } from './strateties/google-admin.strategy';
+import { AdminAuthController } from './admin.auth.controller';
 
 type ConfigServiceEnv = ConfigService<AppConfig>;
 
@@ -37,10 +40,12 @@ type ConfigServiceEnv = ConfigService<AppConfig>;
     FacebookStrategy,
     GoogleTokenStrategy,
     GoogleRedirectStrategy,
+    JwtCookieStrategy,
+    GoogleAdminStrategy,
     AuthService,
     AuthResolver,
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, AdminAuthController],
   exports: [CaslAbilityFactory],
 })
 export class AuthModule {}

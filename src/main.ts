@@ -54,6 +54,16 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
+  // const serverAdapter = new ExpressAdapter();
+  // serverAdapter.setBasePath('/admin/queues');
+  // app.use('/admin/queues', serverAdapter.getRouter());
+  // const queuesService = app.get(QueuesService);
+  //
+  // createBullBoard({
+  //   queues: Array.from(queuesService.getQueues()).map((queue) => new BullAdapter(queue)),
+  //   serverAdapter,
+  // });
+
   setupSwagger(app);
   app.enableCors();
   await app.listen(3000);
