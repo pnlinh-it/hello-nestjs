@@ -5,12 +5,18 @@ import { StrategyEnum } from '../auth/strateties/strategy.enum';
 
 export class AdminRoleMiddleware implements NestMiddleware {
   use(request: Request, response: Response, next: NextFunction): any {
-    passport.authenticate(StrategyEnum.JwtCookie, { session: false }, function (error, user, info) {
-      if (info || !user) {
-        throw new NotFoundException();
-        //return response.sendStatus(HttpStatus.NOT_FOUND);
-      }
-      next();
-    })(request, response, next);
+    const callback = passport.authenticate(
+      StrategyEnum.JwtCookie,
+      { session: false },
+      function (error, user, info) {
+        if (info || !user) {
+          throw new NotFoundException();
+          //return response.sendStatus(HttpStatus.NOT_FOUND);
+        }
+        next();
+      },
+    );
+
+    callback(request, response, next);
   }
 }
