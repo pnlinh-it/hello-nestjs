@@ -31,6 +31,7 @@ import { BullModule } from '@nestjs/bull';
 import { BullConfigFactory } from './config/bull-config-factory.service';
 import { BullBoardModule } from './modules/bulls/bull-board.module';
 import { CronModule } from './modules/crons/cron.module';
+import { WebsocketModule } from './modules/websocket/websocket.module';
 //import configurationYml from './config/configuration-yml';
 
 const option = { password: 'awdawd' };
@@ -128,6 +129,7 @@ const connectionFactory = {
     MailModule,
     MyGraphQLModule,
     CronModule,
+    WebsocketModule,
   ],
   controllers: [AppController],
   providers: [AppService, aliasM1ServiceFactory, connectionFactory, LogService],

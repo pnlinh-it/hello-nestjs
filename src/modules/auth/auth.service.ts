@@ -10,10 +10,13 @@ import { SendResetPasswordEmailDto } from './dto/request/send-reset-password-ema
 import { LoginDto } from './dto/request/login.dto';
 import { RegisterDto } from './dto/request/register.dto';
 import { TokenPayload } from './token-payload';
+import { ConfigService } from '@nestjs/config';
+import { AppConfig } from '../../config/app-config';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private configService: ConfigService<AppConfig>,
     private userService: UsersService,
     private jwtService: JwtService,
     private passwordResets: PasswordResetService,
@@ -59,5 +62,30 @@ export class AuthService {
       template: __dirname + `/templates/reset-password.template.hbs`,
       context: { resetToken: resetToken },
     });
+  }
+
+  verifyJwt(token?: string): number {
+    if (!token) return 0;
+
+    try {
+      const { userId }: TokenPayload = this.jwtService.verify(token, {
+        secret: this.configService.get('jwtKey'),
+      });
+      return userId;
+    } catch (exception) {
+      return 0;
+    }
+  }
+
+  async findUserByJwt(token?: string) {
+    try {
+      const userId = this.verifyJwt(token);
+      if (!userId) {
+        return null;
+      }
+      return await this.userService.findById(userId);
+    } catch (exception) {
+      return null;
+    }
   }
 }

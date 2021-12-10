@@ -5,8 +5,9 @@ import { Cron } from '@nestjs/schedule';
 export class TasksService {
   private readonly logger = new Logger(TasksService.name);
 
-  @Cron('*/5 * * * * *') // Every 5 second -> 17:00:05 17:00:10 17:00:15
+  //@Cron('*/5 * * * * *') // Every 5 second -> 17:00:05 17:00:10 17:00:15
   // @Cron('5 * * * * *') // Every minute on the second 5th -> 17:00:05 17:01:05 17:02:05
+  @Cron('0 0 * * * *') // Every hour
   handleCron() {
     this.logger.debug('Called when the current second is 45');
   }

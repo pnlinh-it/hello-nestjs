@@ -66,7 +66,7 @@ async function bootstrap() {
 
   setupSwagger(app);
   app.enableCors();
-  await app.listen(3000);
+  await app.listen(4000);
 }
 
 bootstrap().then(() => console.log('Bootstrapped'));

@@ -1,6 +1,7 @@
 export enum StrategyEnum {
   Local = 'local',
   JWT = 'jwt',
+  WebsocketJwt = 'websocket-jwt',
   JwtCookie = 'jwt-cookie',
   FacebookToken = 'facebook-token',
   GoogleToken = 'google-token',

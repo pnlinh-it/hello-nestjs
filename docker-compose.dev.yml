@@ -1,6 +1,17 @@
 version: '3.7'
 
 services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+    networks:
+      - hello_nestjs
+
   app:
     build:
       context: .
@@ -8,7 +19,7 @@ services:
     image: hello_nestjs
     container_name: hello_nestjs
     ports:
-      - "80:3000"
+      #- "80:3000"
       - "9229:9229"
     volumes:
       - ./:/usr/src/app
@@ -18,6 +29,7 @@ services:
       - hello_nestjs
     depends_on:
       - mysql
+      - redis
 
   mysql:
     image: mysql:8.0
@@ -28,6 +40,13 @@ services:
       MYSQL_DATABASE: "${DB_NAME}"
       MYSQL_PASSWORD: "${DB_PASSWORD}"
       MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    networks:
+      - hello_nestjs
+
+  redis:
+    image: redis:6.0
+    container_name: redis
+    restart: unless-stopped
     networks:
       - hello_nestjs
 

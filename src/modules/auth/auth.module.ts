@@ -17,6 +17,7 @@ import { GoogleRedirectStrategy } from './strateties/google-redirect.strategy';
 import { JwtCookieStrategy } from './strateties/jwt-cookie.strategy';
 import { GoogleAdminStrategy } from './strateties/google-admin.strategy';
 import { AdminAuthController } from './admin.auth.controller';
+import { WebsocketJwtStrategy } from './strateties/websocket-jwt.strategy';
 
 type ConfigServiceEnv = ConfigService<AppConfig>;
 
@@ -42,10 +43,11 @@ type ConfigServiceEnv = ConfigService<AppConfig>;
     GoogleRedirectStrategy,
     JwtCookieStrategy,
     GoogleAdminStrategy,
+    WebsocketJwtStrategy,
     AuthService,
     AuthResolver,
   ],
   controllers: [AuthController, AdminAuthController],
-  exports: [CaslAbilityFactory],
+  exports: [CaslAbilityFactory, AuthService],
 })
 export class AuthModule {}
