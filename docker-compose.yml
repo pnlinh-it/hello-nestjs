@@ -8,7 +8,8 @@ services:
     image: hello_nestjs
     container_name: hello_nestjs
     ports:
-      - "80:3000"
+      - "80:4000"
+      - "81:4001"
     env_file:
       - .env
     networks:
@@ -28,6 +29,12 @@ services:
     networks:
       - hello_nestjs
 
+  redis:
+    image: redis:6.0
+    container_name: redis
+    restart: unless-stopped
+    networks:
+      - hello_nestjs
 networks:
   hello_nestjs:
     driver: bridge
