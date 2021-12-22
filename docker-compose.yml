@@ -8,14 +8,14 @@ services:
     image: hello_nestjs
     container_name: hello_nestjs
     ports:
-      - "80:4000"
-      - "81:4001"
+      - "80:80"
     env_file:
       - .env
     networks:
       - hello_nestjs
     depends_on:
       - mysql
+      - redis
 
   mysql:
     image: mysql:8.0
@@ -35,6 +35,7 @@ services:
     restart: unless-stopped
     networks:
       - hello_nestjs
+
 networks:
   hello_nestjs:
     driver: bridge
